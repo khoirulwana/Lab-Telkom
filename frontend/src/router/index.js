@@ -1,17 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/Home.vue";
 import HighPassFilter from "../views/HighPassFilter.vue";
-
-const routes = [
-  {
-    path: "/highpass-filter",
-    name: "HighPassFilter",
-    component: HighPassFilter,
-  },
-];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: HomeView,
+    },
+    {
+      path: "/highpass",
+      name: "highpass",
+      component: HighPassFilter,
+    },
+  ],
 });
 
 export default router;
