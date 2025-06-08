@@ -35,6 +35,66 @@
           </div>
         </div>
 
+        <!-- Card Amplitude Modulation (Coming Soon) -->
+        <div class="lab-card coming-soon">
+          <div class="card-icon">
+            <i class="fas fa-solid fa-wave-sine"></i>
+          </div>
+          <div class="card-content">
+            <h2>Amplitude Modulation</h2>
+            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+          </div>
+        </div>
+
+        <!-- Card Frequency Modulation (Coming Soon) -->
+        <div class="lab-card coming-soon">
+          <div class="card-icon">
+            <i class="fas fa-solid fa-wave-sine"></i>
+          </div>
+          <div class="card-content">
+            <h2>Frequency Modulation</h2>
+            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+          </div>
+        </div>
+
+        <!-- Card Analog to Digital Converter (Coming Soon) -->
+        <div class="lab-card coming-soon">
+          <div class="card-icon">
+            <i class="fas fa-solid fa-wave-sine"></i>
+          </div>
+          <div class="card-content">
+            <h2>Analog to Digital Converter</h2>
+            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+          </div>
+        </div>
+
+        <!-- Card Digital to Analog Converter (Coming Soon) -->
+        <div class="lab-card coming-soon">
+          <div class="card-icon">
+            <i class="fas fa-solid fa-wave-sine"></i>
+          </div>
+          <div class="card-content">
+            <h2>Digital to Analog Converter</h2>
+            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+          </div>
+        </div>
+
+        <!-- Card Radio Frequency Oscillator (Coming Soon) -->
+        <div class="lab-card coming-soon">
+          <div class="card-icon">
+            <i class="fas fa-solid fa-wave-sine"></i>
+          </div>
+          <div class="card-content">
+            <h2>Radio Frequency Oscillator</h2>
+            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <span class="coming-soon-badge">Coming Soon</span>
+          </div>
+        </div>
+
         <!-- Card Band Pass Filter (Coming Soon) -->
         <div class="lab-card coming-soon">
           <div class="card-icon">
