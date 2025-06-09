@@ -3,190 +3,286 @@
     <main>
       <!-- Kolom Kiri - Input dan Rangkaian -->
       <div class="left-column">
-        <!-- Diagram Rangkaian -->
-        <figure>
-          <img
-            src="@/assets/highpass1.png"
-            alt="Diagram rangkaian High Pass Filter Aktif"
-          />
-          <figcaption>Rangkaian High Pass Filter Aktif</figcaption>
-        </figure>
+        <div class="image-controlpanel">
+          <!-- Diagram Rangkaian -->
+          <figure>
+            <img
+              src="@/assets/highpass1.png"
+              alt="Diagram rangkaian High Pass Filter Aktif"
+            />
+            <figcaption>Rangkaian High Pass Filter Aktif</figcaption>
+          </figure>
 
-        <!-- Form Input Komponen -->
-        <form @submit.prevent="submitForm">
-          <!-- Input Tegangan -->
-          <div
-            class="input-group"
-            data-tippy-content="Tegangan input yang akan difilter"
-          >
-            <label for="vin">Nilai Tegangan Input (V):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="vin-slider"
-                v-model.number="vin"
-                min="0"
-                max="12"
-                step="0.1"
-              />
-              <input
-                type="number"
-                id="vin"
-                v-model.number="vin"
-                placeholder="Masukkan nilai dalam Volt"
-              />
+          <!-- Panel Kontrol Sinyal -->
+          <div class="control-panel">
+            <h3>Kontrol Sinyal Input</h3>
+            <!-- Kontrol Frekuensi -->
+            <div
+              class="input-group"
+              data-tippy-content="Frekuensi sinyal input yang akan difilter"
+            >
+              <label for="signal-freq">Frekuensi Sinyal (Hz):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="signal-freq-slider"
+                  v-model.number="signalFreq"
+                  min="1"
+                  max="1000"
+                  step="1"
+                />
+                <input
+                  type="number"
+                  id="signal-freq"
+                  v-model.number="signalFreq"
+                  placeholder="Frekuensi dalam Hz"
+                />
+              </div>
+            </div>
+            <!-- Kontrol Amplitudo -->
+            <div
+              class="input-group"
+              data-tippy-content="Amplitudo sinyal input"
+            >
+              <label for="signal-amp">Amplitudo Sinyal (V):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="signal-amp-slider"
+                  v-model.number="signalAmp"
+                  min="1"
+                  max="10"
+                  step="0.1"
+                />
+                <input
+                  type="number"
+                  id="signal-amp"
+                  v-model.number="signalAmp"
+                  placeholder="Amplitudo dalam Volt"
+                />
+              </div>
             </div>
           </div>
+        </div>
 
-          <!-- Input Kapasitor C1 -->
-          <div
-            class="input-group"
-            data-tippy-content="Kapasitor input yang menentukan frekuensi cut-off"
-          >
-            <label for="c1">Nilai Kapasitor C1 (µF):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="c1-slider"
-                v-model.number="c1"
-                min="0.1"
-                max="100"
-                step="0.1"
-              />
-              <input
-                type="number"
-                id="c1"
-                v-model.number="c1"
-                placeholder="Masukkan nilai dalam mikroFarad"
-              />
+        <div class="inputgroup-hasilperhitungan">
+          <!-- Form Input Komponen -->
+          <form @submit.prevent="submitForm">
+            <!-- Input Tegangan -->
+            <div
+              class="input-group"
+              data-tippy-content="Tegangan input yang akan difilter"
+            >
+              <label for="vin">Nilai Tegangan Input (V):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="vin-slider"
+                  v-model.number="vin"
+                  min="0"
+                  max="12"
+                  step="0.1"
+                />
+                <input
+                  type="number"
+                  id="vin"
+                  v-model.number="vin"
+                  placeholder="Masukkan nilai dalam Volt"
+                />
+              </div>
+            </div>
+
+            <!-- Input Kapasitor C1 -->
+            <div
+              class="input-group"
+              data-tippy-content="Kapasitor input yang menentukan frekuensi cut-off"
+            >
+              <label for="c1">Nilai Kapasitor C1 (µF):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="c1-slider"
+                  v-model.number="c1"
+                  min="0.1"
+                  max="100"
+                  step="0.1"
+                />
+                <input
+                  type="number"
+                  id="c1"
+                  v-model.number="c1"
+                  placeholder="Masukkan nilai dalam mikroFarad"
+                />
+              </div>
+            </div>
+
+            <!-- Input Kapasitor C2 -->
+            <div
+              class="input-group"
+              data-tippy-content="Kapasitor feedback yang membantu menstabilkan rangkaian"
+            >
+              <label for="c2">Nilai Kapasitor C2 (µF):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="c2-slider"
+                  v-model.number="c2"
+                  min="0.1"
+                  max="100"
+                  step="0.1"
+                />
+                <input
+                  type="number"
+                  id="c2"
+                  v-model.number="c2"
+                  placeholder="Masukkan nilai dalam mikroFarad"
+                />
+              </div>
+            </div>
+
+            <!-- Input Resistor R1 -->
+            <div
+              class="input-group"
+              data-tippy-content="Resistor input yang menentukan frekuensi cut-off"
+            >
+              <label for="r1">Nilai Resistor R1 (Ω):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="r1-slider"
+                  v-model.number="r1"
+                  min="100"
+                  max="1000000"
+                  step="100"
+                />
+                <input
+                  type="number"
+                  id="r1"
+                  v-model.number="r1"
+                  placeholder="Masukkan nilai dalam Ohm"
+                />
+              </div>
+            </div>
+
+            <!-- Input Resistor R2 -->
+            <div
+              class="input-group"
+              data-tippy-content="Resistor feedback yang menentukan gain rangkaian"
+            >
+              <label for="r2">Nilai Resistor R2 (Ω):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="r2-slider"
+                  v-model.number="r2"
+                  min="100"
+                  max="1000000"
+                  step="100"
+                />
+                <input
+                  type="number"
+                  id="r2"
+                  v-model.number="r2"
+                  placeholder="Masukkan nilai dalam Ohm"
+                />
+              </div>
+            </div>
+
+            <!-- Input Resistor R3 -->
+            <div
+              class="input-group"
+              data-tippy-content="Resistor bias yang membantu menstabilkan op-amp"
+            >
+              <label for="r3">Nilai Resistor R3 (Ω):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="r3-slider"
+                  v-model.number="r3"
+                  min="100"
+                  max="1000000"
+                  step="100"
+                />
+                <input
+                  type="number"
+                  id="r3"
+                  v-model.number="r3"
+                  placeholder="Masukkan nilai dalam Ohm"
+                />
+              </div>
+            </div>
+
+            <!-- Input Resistor R4 -->
+            <div
+              class="input-group"
+              data-tippy-content="Resistor bias yang membantu menstabilkan op-amp"
+            >
+              <label for="r4">Nilai Resistor R4 (Ω):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="r4-slider"
+                  v-model.number="r4"
+                  min="100"
+                  max="1000000"
+                  step="100"
+                />
+                <input
+                  type="number"
+                  id="r4"
+                  v-model.number="r4"
+                  placeholder="Masukkan nilai dalam Ohm"
+                />
+              </div>
+            </div>
+          </form>
+          <!-- Hasil Perhitungan -->
+          <div class="output">
+            <div
+              class="fc"
+              data-tippy-content="Frekuensi di mana gain turun 3dB"
+            >
+              <p>Frekuensi Cut-Off</p>
+              <p>
+                <span>{{ cutOffFreq.toFixed(2) }}</span
+                >Hz
+              </p>
+            </div>
+            <div
+              class="vout"
+              data-tippy-content="Tegangan output setelah melewati filter"
+            >
+              <p>V Out</p>
+              <p>
+                <span>{{ vout.toFixed(2) }}</span
+                >Volt
+              </p>
+            </div>
+            <div
+              class="vgain"
+              data-tippy-content="Gain dalam bentuk rasio tegangan"
+            >
+              <p>Gain</p>
+              <p>
+                <span>{{ gain.toFixed(2) }}</span
+                >Volt
+              </p>
+            </div>
+            <div class="dBgain" data-tippy-content="Gain dalam desibel">
+              <p>Gain</p>
+              <p>
+                <span>{{ gainDB.toFixed(2) }}</span
+                >dB
+              </p>
             </div>
           </div>
-
-          <!-- Input Kapasitor C2 -->
-          <div
-            class="input-group"
-            data-tippy-content="Kapasitor feedback yang membantu menstabilkan rangkaian"
-          >
-            <label for="c2">Nilai Kapasitor C2 (µF):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="c2-slider"
-                v-model.number="c2"
-                min="0.1"
-                max="100"
-                step="0.1"
-              />
-              <input
-                type="number"
-                id="c2"
-                v-model.number="c2"
-                placeholder="Masukkan nilai dalam mikroFarad"
-              />
-            </div>
-          </div>
-
-          <!-- Input Resistor R1 -->
-          <div
-            class="input-group"
-            data-tippy-content="Resistor input yang menentukan frekuensi cut-off"
-          >
-            <label for="r1">Nilai Resistor R1 (Ω):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="r1-slider"
-                v-model.number="r1"
-                min="100"
-                max="1000000"
-                step="100"
-              />
-              <input
-                type="number"
-                id="r1"
-                v-model.number="r1"
-                placeholder="Masukkan nilai dalam Ohm"
-              />
-            </div>
-          </div>
-
-          <!-- Input Resistor R2 -->
-          <div
-            class="input-group"
-            data-tippy-content="Resistor feedback yang menentukan gain rangkaian"
-          >
-            <label for="r2">Nilai Resistor R2 (Ω):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="r2-slider"
-                v-model.number="r2"
-                min="100"
-                max="1000000"
-                step="100"
-              />
-              <input
-                type="number"
-                id="r2"
-                v-model.number="r2"
-                placeholder="Masukkan nilai dalam Ohm"
-              />
-            </div>
-          </div>
-
-          <!-- Input Resistor R3 -->
-          <div
-            class="input-group"
-            data-tippy-content="Resistor bias yang membantu menstabilkan op-amp"
-          >
-            <label for="r3">Nilai Resistor R3 (Ω):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="r3-slider"
-                v-model.number="r3"
-                min="100"
-                max="1000000"
-                step="100"
-              />
-              <input
-                type="number"
-                id="r3"
-                v-model.number="r3"
-                placeholder="Masukkan nilai dalam Ohm"
-              />
-            </div>
-          </div>
-
-          <!-- Input Resistor R4 -->
-          <div
-            class="input-group"
-            data-tippy-content="Resistor bias yang membantu menstabilkan op-amp"
-          >
-            <label for="r4">Nilai Resistor R4 (Ω):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="r4-slider"
-                v-model.number="r4"
-                min="100"
-                max="1000000"
-                step="100"
-              />
-              <input
-                type="number"
-                id="r4"
-                v-model.number="r4"
-                placeholder="Masukkan nilai dalam Ohm"
-              />
-            </div>
-          </div>
-        </form>
+        </div>
 
         <!-- Panel Kontrol Sinyal -->
+        <!--
         <div class="control-panel">
           <h3>Kontrol Sinyal Input</h3>
-          <!-- Kontrol Frekuensi -->
+          ----(comment text)Kontrol Frekuensi
           <div
             class="input-group"
             data-tippy-content="Frekuensi sinyal input yang akan difilter"
@@ -209,7 +305,7 @@
               />
             </div>
           </div>
-          <!-- Kontrol Amplitudo -->
+           ----(comment text) Kontrol Amplitudo----(comment text)
           <div class="input-group" data-tippy-content="Amplitudo sinyal input">
             <label for="signal-amp">Amplitudo Sinyal (V):</label>
             <div class="input-with-slider">
@@ -230,11 +326,13 @@
             </div>
           </div>
         </div>
+        -->
       </div>
 
       <!-- Kolom Kanan - Output dan Grafik -->
       <div class="right-column">
         <!-- Hasil Perhitungan -->
+        <!--
         <div class="output">
           <div class="fc" data-tippy-content="Frekuensi di mana gain turun 3dB">
             <p>Frekuensi Cut-Off</p>
@@ -271,6 +369,7 @@
             </p>
           </div>
         </div>
+        -->
 
         <!-- Grafik Respons Frekuensi -->
         <div class="graph-container">
@@ -294,6 +393,7 @@
         </div>
 
         <!-- Panel Informasi Pembelajaran -->
+        <!--
         <div class="info-panel">
           <h3>Informasi Pembelajaran</h3>
           <div class="info-content">
@@ -315,6 +415,7 @@
             </div>
           </div>
         </div>
+        -->
       </div>
     </main>
   </div>
@@ -602,7 +703,7 @@ export default {
 <style scoped>
 .high-pass-filter {
   padding: 2rem;
-  max-width: 1600px;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -616,6 +717,12 @@ main {
 .right-column {
   display: flex;
   flex-direction: column;
+  gap: 2rem;
+}
+
+.image-controlpanel {
+  display: flex;
+  flex-direction: row;
   gap: 2rem;
 }
 
@@ -635,6 +742,12 @@ figcaption {
   margin-top: 1rem;
   color: #666;
   font-style: italic;
+}
+
+.inputgroup-hasilperhitungan {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
 }
 
 .input-group {
@@ -725,7 +838,7 @@ input[type="number"] {
 
 .signal-graphs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 2rem;
   min-height: 350px;
 }

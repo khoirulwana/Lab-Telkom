@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- Main title for the Virtual Telecommunication Systems Laboratory application -->
     <h1>PRAKTIKUM VIRTUAL SISTEM TELEKOMUNIKASI</h1>
     <router-view></router-view>
   </div>
