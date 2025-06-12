@@ -1,69 +1,19 @@
+/** * Komponen High Pass Filter Aktif * Menampilkan simulasi dan visualisasi
+rangkaian High Pass Filter */
 <template>
   <div class="high-pass-filter">
+    <h1>HIGH PASS FILTER AKTIF</h1>
     <main>
       <!-- Kolom Kiri - Input dan Rangkaian -->
       <div class="left-column">
-        <div class="image-controlpanel">
-          <!-- Diagram Rangkaian -->
-          <figure>
-            <img
-              src="@/assets/highpass1.png"
-              alt="Diagram rangkaian High Pass Filter Aktif"
-            />
-            <figcaption>Rangkaian High Pass Filter Aktif</figcaption>
-          </figure>
-
-          <!-- Panel Kontrol Sinyal -->
-          <div class="control-panel">
-            <h3>Kontrol Sinyal Input</h3>
-            <!-- Kontrol Frekuensi -->
-            <div
-              class="input-group"
-              data-tippy-content="Frekuensi sinyal input yang akan difilter"
-            >
-              <label for="signal-freq">Frekuensi Sinyal (Hz):</label>
-              <div class="input-with-slider">
-                <input
-                  type="range"
-                  id="signal-freq-slider"
-                  v-model.number="signalFreq"
-                  min="1"
-                  max="1000"
-                  step="1"
-                />
-                <input
-                  type="number"
-                  id="signal-freq"
-                  v-model.number="signalFreq"
-                  placeholder="Frekuensi dalam Hz"
-                />
-              </div>
-            </div>
-            <!-- Kontrol Amplitudo -->
-            <div
-              class="input-group"
-              data-tippy-content="Amplitudo sinyal input"
-            >
-              <label for="signal-amp">Amplitudo Sinyal (V):</label>
-              <div class="input-with-slider">
-                <input
-                  type="range"
-                  id="signal-amp-slider"
-                  v-model.number="signalAmp"
-                  min="1"
-                  max="10"
-                  step="0.1"
-                />
-                <input
-                  type="number"
-                  id="signal-amp"
-                  v-model.number="signalAmp"
-                  placeholder="Amplitudo dalam Volt"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Diagram Rangkaian -->
+        <figure>
+          <img
+            src="@/assets/highpass1.png"
+            alt="Diagram rangkaian High Pass Filter Aktif"
+          />
+          <figcaption>Rangkaian High Pass Filter Aktif</figcaption>
+        </figure>
 
         <div class="inputgroup-hasilperhitungan">
           <!-- Form Input Komponen -->
@@ -236,141 +186,104 @@
               </div>
             </div>
           </form>
-          <!-- Hasil Perhitungan -->
-          <div class="output">
-            <div
-              class="fc"
-              data-tippy-content="Frekuensi di mana gain turun 3dB"
-            >
-              <p>Frekuensi Cut-Off</p>
-              <p>
-                <span>{{ cutOffFreq.toFixed(2) }}</span
-                >Hz
-              </p>
-            </div>
-            <div
-              class="vout"
-              data-tippy-content="Tegangan output setelah melewati filter"
-            >
-              <p>V Out</p>
-              <p>
-                <span>{{ vout.toFixed(2) }}</span
-                >Volt
-              </p>
-            </div>
-            <div
-              class="vgain"
-              data-tippy-content="Gain dalam bentuk rasio tegangan"
-            >
-              <p>Gain</p>
-              <p>
-                <span>{{ gain.toFixed(2) }}</span
-                >Volt
-              </p>
-            </div>
-            <div class="dBgain" data-tippy-content="Gain dalam desibel">
-              <p>Gain</p>
-              <p>
-                <span>{{ gainDB.toFixed(2) }}</span
-                >dB
-              </p>
-            </div>
-          </div>
-        </div>
 
-        <!-- Panel Kontrol Sinyal -->
-        <!--
-        <div class="control-panel">
-          <h3>Kontrol Sinyal Input</h3>
-          ----(comment text)Kontrol Frekuensi
-          <div
-            class="input-group"
-            data-tippy-content="Frekuensi sinyal input yang akan difilter"
-          >
-            <label for="signal-freq">Frekuensi Sinyal (Hz):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="signal-freq-slider"
-                v-model.number="signalFreq"
-                min="1"
-                max="1000"
-                step="1"
-              />
-              <input
-                type="number"
-                id="signal-freq"
-                v-model.number="signalFreq"
-                placeholder="Frekuensi dalam Hz"
-              />
+          <!-- Panel Kontrol Sinyal -->
+          <div class="controlpanel-hasilperhitungan">
+            <div class="control-panel">
+              <h3>Kontrol Sinyal Input</h3>
+              <!-- Kontrol Frekuensi -->
+              <div
+                class="input-group"
+                data-tippy-content="Frekuensi sinyal input yang akan difilter"
+              >
+                <label for="signal-freq">Frekuensi Sinyal (Hz):</label>
+                <div class="input-with-slider">
+                  <input
+                    type="range"
+                    id="signal-freq-slider"
+                    v-model.number="signalFreq"
+                    min="1"
+                    max="1000"
+                    step="1"
+                  />
+                  <input
+                    type="number"
+                    id="signal-freq"
+                    v-model.number="signalFreq"
+                    placeholder="Frekuensi dalam Hz"
+                  />
+                </div>
+              </div>
+              <!-- Kontrol Amplitudo -->
+              <div
+                class="input-group"
+                data-tippy-content="Amplitudo sinyal input"
+              >
+                <label for="signal-amp">Amplitudo Sinyal (V):</label>
+                <div class="input-with-slider">
+                  <input
+                    type="range"
+                    id="signal-amp-slider"
+                    v-model.number="signalAmp"
+                    min="1"
+                    max="10"
+                    step="0.1"
+                  />
+                  <input
+                    type="number"
+                    id="signal-amp"
+                    v-model.number="signalAmp"
+                    placeholder="Amplitudo dalam Volt"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-           ----(comment text) Kontrol Amplitudo----(comment text)
-          <div class="input-group" data-tippy-content="Amplitudo sinyal input">
-            <label for="signal-amp">Amplitudo Sinyal (V):</label>
-            <div class="input-with-slider">
-              <input
-                type="range"
-                id="signal-amp-slider"
-                v-model.number="signalAmp"
-                min="1"
-                max="10"
-                step="0.1"
-              />
-              <input
-                type="number"
-                id="signal-amp"
-                v-model.number="signalAmp"
-                placeholder="Amplitudo dalam Volt"
-              />
+            <!-- Hasil Perhitungan -->
+            <div class="output">
+              <div
+                class="fc"
+                data-tippy-content="Frekuensi di mana gain turun 3dB"
+              >
+                <p>Frekuensi Cut-Off</p>
+                <p>
+                  <span>{{ cutOffFreq.toFixed(2) }}</span
+                  >Hz
+                </p>
+              </div>
+              <div
+                class="vout"
+                data-tippy-content="Tegangan output setelah melewati filter"
+              >
+                <p>V Out</p>
+                <p>
+                  <span>{{ vout.toFixed(2) }}</span
+                  >Volt
+                </p>
+              </div>
+              <div
+                class="vgain"
+                data-tippy-content="Gain dalam bentuk rasio tegangan"
+              >
+                <p>Gain</p>
+                <p>
+                  <span>{{ gain.toFixed(2) }}</span
+                  >Volt
+                </p>
+              </div>
+              <div class="dBgain" data-tippy-content="Gain dalam desibel">
+                <p>Gain</p>
+                <p>
+                  <span>{{ gainDB.toFixed(2) }}</span
+                  >dB
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        -->
       </div>
 
-      <!-- Kolom Kanan - Output dan Grafik -->
+      <!-- Kolom Kanan - Grafik -->
       <div class="right-column">
-        <!-- Hasil Perhitungan -->
-        <!--
-        <div class="output">
-          <div class="fc" data-tippy-content="Frekuensi di mana gain turun 3dB">
-            <p>Frekuensi Cut-Off</p>
-            <p>
-              <span>{{ cutOffFreq.toFixed(2) }}</span
-              >Hz
-            </p>
-          </div>
-          <div
-            class="vout"
-            data-tippy-content="Tegangan output setelah melewati filter"
-          >
-            <p>V Out</p>
-            <p>
-              <span>{{ vout.toFixed(2) }}</span
-              >Volt
-            </p>
-          </div>
-          <div
-            class="vgain"
-            data-tippy-content="Gain dalam bentuk rasio tegangan"
-          >
-            <p>Gain</p>
-            <p>
-              <span>{{ gain.toFixed(2) }}</span
-              >Volt
-            </p>
-          </div>
-          <div class="dBgain" data-tippy-content="Gain dalam desibel">
-            <p>Gain</p>
-            <p>
-              <span>{{ gainDB.toFixed(2) }}</span
-              >dB
-            </p>
-          </div>
-        </div>
-        -->
-
         <!-- Grafik Respons Frekuensi -->
         <div class="graph-container">
           <h3>Respons Frekuensi</h3>
@@ -422,19 +335,23 @@
 </template>
 
 <script>
+/**
+ * Komponen High Pass Filter
+ * Mengimplementasikan simulasi dan visualisasi rangkaian High Pass Filter Aktif
+ */
 import { ref, onMounted, watch, onUnmounted } from "vue";
 import { Chart, registerables } from "chart.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale.css";
 
-// Register Chart.js components
+// Mendaftarkan komponen Chart.js
 Chart.register(...registerables);
 
 export default {
   name: "HighPassFilter",
   setup() {
-    // State variables
+    // Variabel state
     const vin = ref(0);
     const c1 = ref(0.1);
     const c2 = ref(0.1);
@@ -449,22 +366,26 @@ export default {
     const gain = ref(0);
     const gainDB = ref(0);
 
-    // Chart refs
+    // Referensi untuk grafik
     const frequencyResponse = ref(null);
     const inputSignal = ref(null);
     const outputSignal = ref(null);
 
-    // Chart instances
+    // Instance grafik
     let frequencyChart = null;
     let inputSignalChart = null;
     let outputSignalChart = null;
     let animationFrameId = null;
     let startTime = null;
 
+    /**
+     * Memperbarui semua grafik
+     * Menghitung dan menampilkan respons frekuensi serta sinyal
+     */
     const updateCharts = () => {
       if (!frequencyChart || !inputSignalChart || !outputSignalChart) return;
 
-      // Update frequency response chart
+      // Memperbarui grafik respons frekuensi
       const frequencies = Array.from({ length: 100 }, (_, i) =>
         Math.pow(10, i / 10)
       );
@@ -478,15 +399,15 @@ export default {
       frequencyChart.data.datasets[0].data = gains;
       frequencyChart.update();
 
-      // Update signal charts with animation
+      // Memperbarui grafik sinyal dengan animasi
       const animate = (timestamp) => {
         if (!startTime) startTime = timestamp;
         const elapsed = timestamp - startTime;
 
-        // Generate time points for one second of data
+        // Menghasilkan titik waktu untuk satu detik data
         const timePoints = Array.from({ length: 100 }, (_, i) => i / 100);
 
-        // Generate input signal with phase shift based on elapsed time
+        // Menghasilkan sinyal input dengan pergeseran fase berdasarkan waktu
         const inputSignalData = timePoints.map((t) => {
           const phase = (elapsed / 1000) * signalFreq.value * 2 * Math.PI;
           return (
@@ -495,7 +416,7 @@ export default {
           );
         });
 
-        // Generate output signal with the same phase shift
+        // Menghasilkan sinyal output dengan pergeseran fase yang sama
         const outputSignalData = inputSignalData.map((input) => {
           const frequency = signalFreq.value;
           const currentGain =
@@ -506,39 +427,43 @@ export default {
 
         inputSignalChart.data.labels = timePoints;
         inputSignalChart.data.datasets[0].data = inputSignalData;
-        inputSignalChart.update("none"); // Use 'none' for better performance
+        inputSignalChart.update("none");
 
         outputSignalChart.data.labels = timePoints;
         outputSignalChart.data.datasets[0].data = outputSignalData;
-        outputSignalChart.update("none"); // Use 'none' for better performance
+        outputSignalChart.update("none");
 
         animationFrameId = requestAnimationFrame(animate);
       };
 
-      // Start animation if not already running
+      // Memulai animasi jika belum berjalan
       if (!animationFrameId) {
         animationFrameId = requestAnimationFrame(animate);
       }
     };
 
+    /**
+     * Menghitung parameter rangkaian
+     * Termasuk frekuensi cut-off, gain, dan tegangan output
+     */
     const calculateParameters = () => {
-      // Calculate cut-off frequency
+      // Menghitung frekuensi cut-off
       cutOffFreq.value = 1 / (2 * Math.PI * r1.value * c1.value * 1e-6);
 
-      // Calculate gain
+      // Menghitung gain
       gain.value = -r2.value / r1.value;
 
-      // Calculate gain in dB
+      // Menghitung gain dalam dB
       gainDB.value = 20 * Math.log10(Math.abs(gain.value));
 
-      // Calculate output voltage
+      // Menghitung tegangan output
       vout.value = vin.value * gain.value;
 
-      // Update charts
+      // Memperbarui grafik
       updateCharts();
     };
 
-    // Calculate parameters whenever component values change
+    // Menghitung parameter setiap kali nilai komponen berubah
     watch(
       [r1, r2, c1, vin, signalFreq, signalAmp],
       () => {
@@ -547,8 +472,12 @@ export default {
       { immediate: true }
     );
 
+    /**
+     * Menginisialisasi grafik
+     * Membuat instance Chart.js untuk setiap grafik
+     */
     const initializeCharts = () => {
-      // Initialize frequency response chart
+      // Menginisialisasi grafik respons frekuensi
       const freqCtx = frequencyResponse.value.getContext("2d");
       frequencyChart = new Chart(freqCtx, {
         type: "line",
@@ -556,7 +485,7 @@ export default {
           labels: [],
           datasets: [
             {
-              label: "Frequency Response",
+              label: "Respons Frekuensi",
               data: [],
               borderColor: "blue",
               fill: false,
@@ -565,14 +494,14 @@ export default {
         },
         options: {
           animation: {
-            duration: 0, // Disable animation for better performance
+            duration: 0,
           },
           scales: {
             x: {
               type: "logarithmic",
               title: {
                 display: true,
-                text: "Frequency (Hz)",
+                text: "Frekuensi (Hz)",
               },
             },
             y: {
@@ -585,7 +514,7 @@ export default {
         },
       });
 
-      // Initialize signal charts
+      // Menginisialisasi grafik sinyal input
       const inputCtx = inputSignal.value.getContext("2d");
       inputSignalChart = new Chart(inputCtx, {
         type: "line",
@@ -593,7 +522,7 @@ export default {
           labels: [],
           datasets: [
             {
-              label: "Input Signal",
+              label: "Sinyal Input",
               data: [],
               borderColor: "blue",
               fill: false,
@@ -603,25 +532,26 @@ export default {
         },
         options: {
           animation: {
-            duration: 0, // Disable animation for better performance
+            duration: 0,
           },
           scales: {
             x: {
               title: {
                 display: true,
-                text: "Time (s)",
+                text: "Waktu (s)",
               },
             },
             y: {
               title: {
                 display: true,
-                text: "Amplitude (V)",
+                text: "Amplitudo (V)",
               },
             },
           },
         },
       });
 
+      // Menginisialisasi grafik sinyal output
       const outputCtx = outputSignal.value.getContext("2d");
       outputSignalChart = new Chart(outputCtx, {
         type: "line",
@@ -629,7 +559,7 @@ export default {
           labels: [],
           datasets: [
             {
-              label: "Output Signal",
+              label: "Sinyal Output",
               data: [],
               borderColor: "green",
               fill: false,
@@ -639,39 +569,39 @@ export default {
         },
         options: {
           animation: {
-            duration: 0, // Disable animation for better performance
+            duration: 0,
           },
           scales: {
             x: {
               title: {
                 display: true,
-                text: "Time (s)",
+                text: "Waktu (s)",
               },
             },
             y: {
               title: {
                 display: true,
-                text: "Amplitude (V)",
+                text: "Amplitudo (V)",
               },
             },
           },
         },
       });
 
-      // Initial calculation
+      // Perhitungan awal
       calculateParameters();
     };
 
     onMounted(() => {
       initializeCharts();
-      // Initialize tooltips
+      // Menginisialisasi tooltip
       tippy("[data-tippy-content]", {
         animation: "scale",
         duration: 200,
       });
     });
 
-    // Cleanup animation frame on component unmount
+    // Membersihkan frame animasi saat komponen di-unmount
     onUnmounted(() => {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -701,6 +631,7 @@ export default {
 </script>
 
 <style scoped>
+/* Gaya untuk komponen High Pass Filter */
 .high-pass-filter {
   padding: 2rem;
   width: 90%;
@@ -745,9 +676,9 @@ figcaption {
 }
 
 .inputgroup-hasilperhitungan {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
 .input-group {
@@ -776,6 +707,13 @@ input[type="number"] {
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
+
+.controlpanel-hasilperhitungan {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 2rem;
 }
 
 .control-panel {
@@ -853,37 +791,7 @@ input[type="number"] {
   font-size: 1.1rem;
 }
 
-.info-panel {
-  background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.info-panel h3 {
-  margin: 0 0 1rem;
-  color: #333;
-}
-
-.info-content p {
-  margin: 0 0 1rem;
-  color: #666;
-  line-height: 1.5;
-}
-
-.formula {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 4px;
-  margin-top: 1rem;
-}
-
-.formula p {
-  margin: 0.5rem 0;
-  font-family: monospace;
-  color: #333;
-}
-
+/* Responsif untuk layar kecil */
 @media (max-width: 1200px) {
   main {
     grid-template-columns: 1fr;

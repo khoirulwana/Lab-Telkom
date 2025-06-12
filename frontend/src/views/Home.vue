@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <header class="header">
-      <h1>Laboratorium Virtual Elektronika</h1>
+      <h1>PRAKTIKUM VIRTUAL SISTEM TELEKOMUNIKASI</h1>
+      <h2>Laboratorium Virtual Elektronika</h2>
       <p>Platform pembelajaran interaktif untuk praktikum elektronika</p>
     </header>
 
