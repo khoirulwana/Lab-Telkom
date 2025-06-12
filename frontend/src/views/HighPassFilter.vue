@@ -53,9 +53,9 @@ rangkaian High Pass Filter */
                   type="range"
                   id="c1-slider"
                   v-model.number="c1"
-                  min="0.1"
-                  max="100"
-                  step="0.1"
+                  min="0.01"
+                  max="10"
+                  step="0.01"
                 />
                 <input
                   type="number"
@@ -77,9 +77,9 @@ rangkaian High Pass Filter */
                   type="range"
                   id="c2-slider"
                   v-model.number="c2"
-                  min="0.1"
-                  max="100"
-                  step="0.1"
+                  min="0.01"
+                  max="10"
+                  step="0.01"
                 />
                 <input
                   type="number"
@@ -101,9 +101,9 @@ rangkaian High Pass Filter */
                   type="range"
                   id="r1-slider"
                   v-model.number="r1"
-                  min="100"
-                  max="1000000"
-                  step="100"
+                  min="1000"
+                  max="100000"
+                  step="1000"
                 />
                 <input
                   type="number"
@@ -125,9 +125,9 @@ rangkaian High Pass Filter */
                   type="range"
                   id="r2-slider"
                   v-model.number="r2"
-                  min="100"
-                  max="1000000"
-                  step="100"
+                  min="1000"
+                  max="100000"
+                  step="1000"
                 />
                 <input
                   type="number"
@@ -149,9 +149,9 @@ rangkaian High Pass Filter */
                   type="range"
                   id="r3-slider"
                   v-model.number="r3"
-                  min="100"
-                  max="1000000"
-                  step="100"
+                  min="1000"
+                  max="100000"
+                  step="1000"
                 />
                 <input
                   type="number"
@@ -173,9 +173,9 @@ rangkaian High Pass Filter */
                   type="range"
                   id="r4-slider"
                   v-model.number="r4"
-                  min="100"
-                  max="1000000"
-                  step="100"
+                  min="1000"
+                  max="100000"
+                  step="1000"
                 />
                 <input
                   type="number"
@@ -203,7 +203,7 @@ rangkaian High Pass Filter */
                     id="signal-freq-slider"
                     v-model.number="signalFreq"
                     min="1"
-                    max="1000"
+                    max="20000"
                     step="1"
                   />
                   <input
@@ -225,7 +225,7 @@ rangkaian High Pass Filter */
                     type="range"
                     id="signal-amp-slider"
                     v-model.number="signalAmp"
-                    min="1"
+                    min="0.1"
                     max="10"
                     step="0.1"
                   />
@@ -291,7 +291,7 @@ rangkaian High Pass Filter */
         </div>
 
         <!-- Visualisasi Sinyal -->
-        <div class="graph-container">
+        <div class="visual-graph-container">
           <h3>Visualisasi Sinyal</h3>
           <div class="signal-graphs">
             <div class="signal-graph">
@@ -352,14 +352,14 @@ export default {
   name: "HighPassFilter",
   setup() {
     // Variabel state
-    const vin = ref(0);
+    const vin = ref(1);
     const c1 = ref(0.1);
     const c2 = ref(0.1);
-    const r1 = ref(1000);
-    const r2 = ref(1000);
-    const r3 = ref(1000);
-    const r4 = ref(1000);
-    const signalFreq = ref(10);
+    const r1 = ref(10000);
+    const r2 = ref(10000);
+    const r3 = ref(10000);
+    const r4 = ref(10000);
+    const signalFreq = ref(1000);
     const signalAmp = ref(1);
     const cutOffFreq = ref(0);
     const vout = ref(0);
@@ -399,7 +399,7 @@ export default {
       frequencyChart.data.datasets[0].data = gains;
       frequencyChart.update();
 
-      // Memperbarui grafik sinyal dengan animasi
+      // Memperbarui grafik sinyal dengan animasi yang lebih lambat
       const animate = (timestamp) => {
         if (!startTime) startTime = timestamp;
         const elapsed = timestamp - startTime;
@@ -408,8 +408,9 @@ export default {
         const timePoints = Array.from({ length: 100 }, (_, i) => i / 100);
 
         // Menghasilkan sinyal input dengan pergeseran fase berdasarkan waktu
+        // Memperlambat animasi dengan membagi elapsed dengan faktor 2
         const inputSignalData = timePoints.map((t) => {
-          const phase = (elapsed / 1000) * signalFreq.value * 2 * Math.PI;
+          const phase = (elapsed / 2000) * signalFreq.value * 2 * Math.PI; // Dibagi 2000 untuk memperlambat
           return (
             signalAmp.value *
             Math.sin(2 * Math.PI * signalFreq.value * t + phase)
@@ -433,7 +434,10 @@ export default {
         outputSignalChart.data.datasets[0].data = outputSignalData;
         outputSignalChart.update("none");
 
-        animationFrameId = requestAnimationFrame(animate);
+        // Menggunakan requestAnimationFrame dengan interval yang lebih lama
+        animationFrameId = setTimeout(() => {
+          requestAnimationFrame(animate);
+        }, 50); // Menambahkan delay 50ms antara setiap frame
       };
 
       // Memulai animasi jika belum berjalan
@@ -487,14 +491,58 @@ export default {
             {
               label: "Respons Frekuensi",
               data: [],
-              borderColor: "blue",
+              borderColor: "#00ff9d",
+              borderWidth: 2,
               fill: false,
+              tension: 0.4,
+              pointRadius: 3,
+              pointHoverRadius: 6,
+              pointBackgroundColor: "#00ff9d",
+              pointBorderColor: "#ffffff",
+              pointBorderWidth: 1,
+              pointHoverBackgroundColor: "#00ff9d",
+              pointHoverBorderColor: "#fff",
+              pointHoverBorderWidth: 2,
             },
           ],
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
           animation: {
             duration: 0,
+          },
+          plugins: {
+            legend: {
+              position: "top",
+              labels: {
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              titleColor: "#fff",
+              bodyColor: "#e0e0e0",
+              titleFont: {
+                size: 14,
+                weight: "bold",
+              },
+              bodyFont: {
+                size: 13,
+              },
+              padding: 10,
+              callbacks: {
+                label: function (context) {
+                  return `Gain: ${context.parsed.y.toFixed(2)} dB`;
+                },
+              },
+            },
           },
           scales: {
             x: {
@@ -502,12 +550,45 @@ export default {
               title: {
                 display: true,
                 text: "Frekuensi (Hz)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+                callback: function (value) {
+                  return value.toLocaleString();
+                },
               },
             },
             y: {
               title: {
                 display: true,
                 text: "Gain (dB)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
               },
             },
           },
@@ -524,27 +605,106 @@ export default {
             {
               label: "Sinyal Input",
               data: [],
-              borderColor: "blue",
+              borderColor: "#ff00ff",
+              borderWidth: 2,
               fill: false,
               tension: 0.4,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHoverBackgroundColor: "#ff00ff",
+              pointHoverBorderColor: "#fff",
+              pointHoverBorderWidth: 2,
             },
           ],
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
           animation: {
             duration: 0,
+          },
+          layout: {
+            padding: {
+              top: 10,
+              right: 10,
+              bottom: 10,
+              left: 10,
+            },
+          },
+          plugins: {
+            legend: {
+              position: "top",
+              labels: {
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              titleColor: "#fff",
+              bodyColor: "#e0e0e0",
+              titleFont: {
+                size: 14,
+                weight: "bold",
+              },
+              bodyFont: {
+                size: 13,
+              },
+              padding: 10,
+              callbacks: {
+                label: function (context) {
+                  return `Amplitudo: ${context.parsed.y.toFixed(2)} V`;
+                },
+              },
+            },
           },
           scales: {
             x: {
               title: {
                 display: true,
                 text: "Waktu (s)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+                maxTicksLimit: 8,
               },
             },
             y: {
               title: {
                 display: true,
                 text: "Amplitudo (V)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
               },
             },
           },
@@ -561,27 +721,106 @@ export default {
             {
               label: "Sinyal Output",
               data: [],
-              borderColor: "green",
+              borderColor: "#00ffff",
+              borderWidth: 2,
               fill: false,
               tension: 0.4,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHoverBackgroundColor: "#00ffff",
+              pointHoverBorderColor: "#fff",
+              pointHoverBorderWidth: 2,
             },
           ],
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
           animation: {
             duration: 0,
+          },
+          layout: {
+            padding: {
+              top: 10,
+              right: 10,
+              bottom: 10,
+              left: 10,
+            },
+          },
+          plugins: {
+            legend: {
+              position: "top",
+              labels: {
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              titleColor: "#fff",
+              bodyColor: "#e0e0e0",
+              titleFont: {
+                size: 14,
+                weight: "bold",
+              },
+              bodyFont: {
+                size: 13,
+              },
+              padding: 10,
+              callbacks: {
+                label: function (context) {
+                  return `Amplitudo: ${context.parsed.y.toFixed(2)} V`;
+                },
+              },
+            },
           },
           scales: {
             x: {
               title: {
                 display: true,
                 text: "Waktu (s)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+                maxTicksLimit: 8,
               },
             },
             y: {
               title: {
                 display: true,
                 text: "Amplitudo (V)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
               },
             },
           },
@@ -604,7 +843,11 @@ export default {
     // Membersihkan frame animasi saat komponen di-unmount
     onUnmounted(() => {
       if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+        if (typeof animationFrameId === "number") {
+          cancelAnimationFrame(animationFrameId);
+        } else {
+          clearTimeout(animationFrameId);
+        }
       }
     });
 
@@ -636,6 +879,9 @@ export default {
   padding: 2rem;
   width: 90%;
   margin: 0 auto;
+  color: #ffffff;
+  background: #1a1a1a;
+  min-height: 100vh;
 }
 
 main {
@@ -665,20 +911,21 @@ figure {
 figure img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  border: 1px solid #333;
 }
 
 figcaption {
   margin-top: 1rem;
-  color: #666;
+  color: #a0a0a0;
   font-style: italic;
 }
 
 .inputgroup-hasilperhitungan {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .input-group {
@@ -688,8 +935,9 @@ figcaption {
 .input-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #ffffff;
   font-weight: 500;
+  font-size: 0.95rem;
 }
 
 .input-with-slider {
@@ -700,13 +948,44 @@ figcaption {
 
 input[type="range"] {
   flex: 1;
+  background: #2a2a2a;
+  height: 6px;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  border: 1px solid #404040;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #4a9eff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(74, 158, 255, 0.4);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #5fb0ff;
+  box-shadow: 0 0 12px rgba(74, 158, 255, 0.6);
 }
 
 input[type="number"] {
   width: 100px;
   padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid #404040;
+  border-radius: 6px;
+  background: #2a2a2a;
+  color: #ffffff;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+input[type="number"]:focus {
+  border-color: #4a9eff;
+  box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.2);
+  outline: none;
 }
 
 .controlpanel-hasilperhitungan {
@@ -717,34 +996,47 @@ input[type="number"] {
 }
 
 .control-panel {
-  background: #f8f9fa;
+  background: #2a2a2a;
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #404040;
 }
 
 .control-panel h3 {
   margin: 0 0 1rem;
-  color: #333;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .output {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  background: #f8f9fa;
+  background: #2a2a2a;
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #404040;
 }
 
 .output > div {
   text-align: center;
+  padding: 1rem;
+  background: #333;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.output > div:hover {
+  background: #3a3a3a;
+  transform: translateY(-2px);
 }
 
 .output p:first-child {
   margin: 0 0 0.5rem;
-  color: #666;
+  color: #a0a0a0;
   font-size: 0.9rem;
 }
 
@@ -752,43 +1044,82 @@ input[type="number"] {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 500;
-  color: #333;
+  color: #ffffff;
 }
 
 .output span {
-  color: #2196f3;
+  color: #4a9eff;
   font-weight: 600;
 }
 
 .graph-container {
-  background: white;
+  background: #2a2a2a;
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  min-height: 400px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  height: 400px;
+  position: relative;
+  border: 1px solid #404040;
+  display: flex;
+  flex-direction: column;
+}
+
+.visual-graph-container {
+  background: #2a2a2a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  height: auto;
+  position: relative;
+  border: 1px solid #404040;
+  display: flex;
+  flex-direction: column;
 }
 
 .graph-container h3 {
   margin: 0 0 1.5rem;
-  color: #333;
+  color: #ffffff;
   font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #404040;
 }
 
 .signal-graphs {
   display: grid;
   grid-template-rows: 1fr 1fr;
   gap: 2rem;
-  min-height: 350px;
+  height: auto;
+  padding: 1rem;
+  background: #222;
+  border-radius: 8px;
+  border: 1px solid #404040;
 }
 
 .signal-graph {
-  min-height: 300px;
+  height: 300px;
+  background: #2a2a2a;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid #404040;
+  display: flex;
+  flex-direction: column;
 }
 
 .signal-graph h4 {
   margin: 0 0 1rem;
-  color: #666;
+  color: #ffffff;
   font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.signal-graph canvas {
+  flex: 1;
+  width: 100% !important;
+  height: calc(100% - 2rem) !important;
 }
 
 /* Responsif untuk layar kecil */
@@ -798,15 +1129,15 @@ input[type="number"] {
   }
 
   .graph-container {
-    min-height: 350px;
+    height: 350px;
   }
 
   .signal-graphs {
-    min-height: 300px;
+    height: 300px;
   }
 
   .signal-graph {
-    min-height: 250px;
+    height: 250px;
   }
 }
 
@@ -818,6 +1149,7 @@ input[type="number"] {
   .signal-graphs {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    height: 300px;
   }
 
   .output {
@@ -825,11 +1157,11 @@ input[type="number"] {
   }
 
   .graph-container {
-    min-height: 300px;
+    height: 300px;
   }
 
   .signal-graph {
-    min-height: 200px;
+    height: 200px;
   }
 }
 </style>
