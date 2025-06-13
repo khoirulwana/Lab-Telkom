@@ -152,26 +152,34 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f8f9fa;
+  background-color: #1a1a1a;
 }
 
 .header {
-  background: linear-gradient(135deg, #4caf50 0%, #2196f3 100%);
-  color: white;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  color: #ffffff;
   padding: 3rem 2rem;
   text-align: center;
+  border-bottom: 1px solid #404040;
 }
 
 .header h1 {
   margin: 0;
   font-size: 2.5rem;
   font-weight: 700;
+  color: #ffffff;
+}
+
+.header h2 {
+  margin: 0.5rem 0;
+  font-size: 1.8rem;
+  color: #4a9eff;
 }
 
 .header p {
   margin: 1rem 0 0;
   font-size: 1.2rem;
-  opacity: 0.9;
+  color: #a0a0a0;
 }
 
 .main-content {
@@ -190,19 +198,21 @@ export default {
 }
 
 .lab-card {
-  background: white;
+  background: #2a2a2a;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   padding: 1.5rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  border: 1px solid #404040;
 }
 
 .lab-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+  border-color: #4a9eff;
 }
 
 .lab-card.coming-soon {
@@ -212,19 +222,19 @@ export default {
 
 .card-icon {
   font-size: 2.5rem;
-  color: #4caf50;
+  color: #4a9eff;
   margin-bottom: 1rem;
 }
 
 .card-content h2 {
   margin: 0 0 0.5rem;
-  color: #333;
+  color: #ffffff;
   font-size: 1.5rem;
 }
 
 .card-content p {
   margin: 0 0 1rem;
-  color: #666;
+  color: #a0a0a0;
   font-size: 1rem;
 }
 
@@ -236,7 +246,7 @@ export default {
 
 .features li {
   padding: 0.5rem 0;
-  color: #666;
+  color: #a0a0a0;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -244,7 +254,7 @@ export default {
 
 .features li::before {
   content: "•";
-  color: #4caf50;
+  color: #4a9eff;
   font-weight: bold;
   margin-right: 0.5rem;
 }
@@ -254,7 +264,7 @@ export default {
   top: 1rem;
   right: 1rem;
   background: #ff9800;
-  color: white;
+  color: #ffffff;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -262,11 +272,12 @@ export default {
 }
 
 .footer {
-  background: #333;
-  color: white;
+  background: #2a2a2a;
+  color: #a0a0a0;
   text-align: center;
   padding: 1.5rem;
   margin-top: auto;
+  border-top: 1px solid #404040;
 }
 
 @media (max-width: 768px) {

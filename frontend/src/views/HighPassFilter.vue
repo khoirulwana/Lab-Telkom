@@ -359,7 +359,7 @@ export default {
     const r2 = ref(10000);
     const r3 = ref(10000);
     const r4 = ref(10000);
-    const signalFreq = ref(1000);
+    const signalFreq = ref(10);
     const signalAmp = ref(1);
     const cutOffFreq = ref(0);
     const vout = ref(0);
@@ -390,6 +390,7 @@ export default {
         Math.pow(10, i / 10)
       );
       const gains = frequencies.map((f) => {
+        // Menghitung gain pada setiap frekuensi berdasarkan teori High Pass Filter
         const currentGain =
           gain.value / Math.sqrt(1 + Math.pow(cutOffFreq.value / f, 2));
         return 20 * Math.log10(Math.abs(currentGain));
@@ -407,23 +408,25 @@ export default {
         // Menghasilkan titik waktu untuk satu detik data
         const timePoints = Array.from({ length: 100 }, (_, i) => i / 100);
 
-        // Menghasilkan sinyal input dengan pergeseran fase berdasarkan waktu
-        // Memperlambat animasi dengan membagi elapsed dengan faktor 2
+        // Menghasilkan sinyal input
         const inputSignalData = timePoints.map((t) => {
-          const phase = (elapsed / 2000) * signalFreq.value * 2 * Math.PI; // Dibagi 2000 untuk memperlambat
+          const phase = (elapsed / 2000) * signalFreq.value * 2 * Math.PI;
           return (
             signalAmp.value *
             Math.sin(2 * Math.PI * signalFreq.value * t + phase)
           );
         });
 
-        // Menghasilkan sinyal output dengan pergeseran fase yang sama
+        // Menghasilkan sinyal output berdasarkan teori High Pass Filter
         const outputSignalData = inputSignalData.map((input) => {
           const frequency = signalFreq.value;
+          // Menghitung gain pada frekuensi sinyal input
           const currentGain =
             gain.value /
             Math.sqrt(1 + Math.pow(cutOffFreq.value / frequency, 2));
-          return input * currentGain;
+          // Menghitung fase output (bergeser 90 derajat di frekuensi cut-off)
+          const phaseShift = Math.atan2(cutOffFreq.value / frequency, 1);
+          return input * currentGain * Math.cos(phaseShift);
         });
 
         inputSignalChart.data.labels = timePoints;
@@ -434,13 +437,11 @@ export default {
         outputSignalChart.data.datasets[0].data = outputSignalData;
         outputSignalChart.update("none");
 
-        // Menggunakan requestAnimationFrame dengan interval yang lebih lama
         animationFrameId = setTimeout(() => {
           requestAnimationFrame(animate);
-        }, 50); // Menambahkan delay 50ms antara setiap frame
+        }, 50);
       };
 
-      // Memulai animasi jika belum berjalan
       if (!animationFrameId) {
         animationFrameId = requestAnimationFrame(animate);
       }
@@ -460,7 +461,7 @@ export default {
       // Menghitung gain dalam dB
       gainDB.value = 20 * Math.log10(Math.abs(gain.value));
 
-      // Menghitung tegangan output
+      // Menghitung tegangan output berdasarkan gain
       vout.value = vin.value * gain.value;
 
       // Memperbarui grafik
@@ -884,6 +885,17 @@ export default {
   min-height: 100vh;
 }
 
+.high-pass-filter h1 {
+  margin: 0;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  border-bottom: 2px solid #404040;
+  margin-bottom: 2rem;
+}
+
 main {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
@@ -897,12 +909,6 @@ main {
   gap: 2rem;
 }
 
-.image-controlpanel {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-}
-
 figure {
   margin: 0;
   text-align: center;
@@ -913,13 +919,14 @@ figure img {
   height: auto;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-  border: 1px solid #333;
+  border: 2px solid #404040;
 }
 
 figcaption {
   margin-top: 1rem;
-  color: #a0a0a0;
+  color: #e0e0e0;
   font-style: italic;
+  font-size: 1rem;
 }
 
 .inputgroup-hasilperhitungan {
@@ -935,9 +942,9 @@ figcaption {
 .input-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #ffffff;
+  color: #e0e0e0;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .input-with-slider {
@@ -952,11 +959,13 @@ input[type="range"] {
   height: 6px;
   border-radius: 3px;
   -webkit-appearance: none;
-  border: 1px solid #404040;
+  appearance: none;
+  border: 1px solid #505050;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   width: 18px;
   height: 18px;
   background: #4a9eff;
@@ -974,11 +983,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
 input[type="number"] {
   width: 100px;
   padding: 0.5rem;
-  border: 1px solid #404040;
+  border: 1px solid #505050;
   border-radius: 6px;
   background: #2a2a2a;
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
 }
 
@@ -1000,14 +1009,16 @@ input[type="number"]:focus {
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border: 1px solid #404040;
+  border: 2px solid #404040;
 }
 
 .control-panel h3 {
   margin: 0 0 1rem;
   color: #ffffff;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
+  border-bottom: 1px solid #404040;
+  padding-bottom: 0.5rem;
 }
 
 .output {
@@ -1018,7 +1029,7 @@ input[type="number"]:focus {
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border: 1px solid #404040;
+  border: 2px solid #404040;
 }
 
 .output > div {
@@ -1027,22 +1038,24 @@ input[type="number"]:focus {
   background: #333;
   border-radius: 8px;
   transition: all 0.2s ease;
+  border: 1px solid #404040;
 }
 
 .output > div:hover {
   background: #3a3a3a;
   transform: translateY(-2px);
+  border-color: #4a9eff;
 }
 
 .output p:first-child {
   margin: 0 0 0.5rem;
-  color: #a0a0a0;
-  font-size: 0.9rem;
+  color: #e0e0e0;
+  font-size: 1rem;
 }
 
 .output p:last-child {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 500;
   color: #ffffff;
 }
@@ -1059,7 +1072,7 @@ input[type="number"]:focus {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   height: 400px;
   position: relative;
-  border: 1px solid #404040;
+  border: 2px solid #404040;
   display: flex;
   flex-direction: column;
 }
@@ -1071,7 +1084,7 @@ input[type="number"]:focus {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   height: auto;
   position: relative;
-  border: 1px solid #404040;
+  border: 2px solid #404040;
   display: flex;
   flex-direction: column;
 }
@@ -1094,7 +1107,7 @@ input[type="number"]:focus {
   padding: 1rem;
   background: #222;
   border-radius: 8px;
-  border: 1px solid #404040;
+  border: 2px solid #404040;
 }
 
 .signal-graph {
@@ -1114,6 +1127,8 @@ input[type="number"]:focus {
   font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
+  border-bottom: 1px solid #404040;
+  padding-bottom: 0.5rem;
 }
 
 .signal-graph canvas {
