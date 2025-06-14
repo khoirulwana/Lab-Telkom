@@ -237,6 +237,29 @@ rangkaian High Pass Filter */
                   />
                 </div>
               </div>
+              <!-- Input Faktor Q -->
+              <div
+                class="input-group"
+                data-tippy-content="Faktor kualitas yang menentukan karakteristik filter"
+              >
+                <label for="q">Faktor Q:</label>
+                <div class="input-with-slider">
+                  <input
+                    type="range"
+                    id="q-slider"
+                    v-model.number="Q"
+                    min="0.1"
+                    max="10"
+                    step="0.01"
+                  />
+                  <input
+                    type="number"
+                    id="q"
+                    v-model.number="Q"
+                    placeholder="Masukkan nilai Q"
+                  />
+                </div>
+              </div>
             </div>
             <!-- Hasil Perhitungan -->
             <div class="output">
@@ -295,11 +318,62 @@ rangkaian High Pass Filter */
           <h3>Visualisasi Sinyal</h3>
           <div class="signal-graphs">
             <div class="signal-graph">
-              <h4>Sinyal Input</h4>
+              <div class="graph-header">
+                <h4>Sinyal Input</h4>
+                <div class="signal-info">
+                  <div class="info-item">
+                    <span class="label">Frekuensi:</span>
+                    <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Amplitudo:</span>
+                    <span class="value">{{ signalAmp.toFixed(2) }} V</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Status:</span>
+                    <span
+                      class="value"
+                      :class="{
+                        'above-cutoff': signalFreq > cutOffFreq,
+                        'below-cutoff': signalFreq <= cutOffFreq,
+                      }"
+                    >
+                      {{
+                        signalFreq > cutOffFreq
+                          ? "Di Atas Cut-off"
+                          : "Di Bawah Cut-off"
+                      }}
+                    </span>
+                  </div>
+                </div>
+              </div>
               <canvas ref="inputSignal"></canvas>
             </div>
             <div class="signal-graph">
-              <h4>Sinyal Output</h4>
+              <div class="graph-header">
+                <h4>Sinyal Output</h4>
+                <div class="signal-info">
+                  <div class="info-item">
+                    <span class="label">Frekuensi:</span>
+                    <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Amplitudo:</span>
+                    <span class="value output-amp"
+                      >{{ signalAmp.toFixed(2) }} V</span
+                    >
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Gain:</span>
+                    <span class="value"
+                      >{{
+                        (20 * Math.log10(Math.abs(gainAtF))).toFixed(2)
+                      }}
+                      dB</span
+                    >
+                  </div>
+                </div>
+              </div>
               <canvas ref="outputSignal"></canvas>
             </div>
           </div>
@@ -365,6 +439,7 @@ export default {
     const vout = ref(0);
     const gain = ref(0);
     const gainDB = ref(0);
+    const Q = ref(0.707); // Faktor kualitas default Butterworth
 
     // Referensi untuk grafik
     const frequencyResponse = ref(null);
@@ -385,50 +460,74 @@ export default {
     const updateCharts = () => {
       if (!frequencyChart || !inputSignalChart || !outputSignalChart) return;
 
-      // Memperbarui grafik respons frekuensi
+      const fc = cutOffFreq.value;
+      const Av = gain.value;
+
+      // Respons frekuensi orde 2 (Butterworth/Sallen-Key)
       const frequencies = Array.from({ length: 100 }, (_, i) =>
         Math.pow(10, i / 10)
       );
       const gains = frequencies.map((f) => {
-        // Menghitung gain pada setiap frekuensi berdasarkan teori High Pass Filter
-        const currentGain =
-          gain.value / Math.sqrt(1 + Math.pow(cutOffFreq.value / f, 2));
-        return 20 * Math.log10(Math.abs(currentGain));
+        const ratio = f / fc;
+        const numerator = ratio * ratio;
+        const denominator = Math.sqrt(
+          Math.pow(1 - numerator, 2) + Math.pow(ratio / Q.value, 2)
+        );
+        const gainAtF = (Av * numerator) / denominator;
+        return 20 * Math.log10(Math.abs(gainAtF));
       });
 
       frequencyChart.data.labels = frequencies;
       frequencyChart.data.datasets[0].data = gains;
       frequencyChart.update();
 
-      // Memperbarui grafik sinyal dengan animasi yang lebih lambat
+      // Animasi sinyal input/output
       const animate = (timestamp) => {
         if (!startTime) startTime = timestamp;
         const elapsed = timestamp - startTime;
 
-        // Menghasilkan titik waktu untuk satu detik data
         const timePoints = Array.from({ length: 100 }, (_, i) => i / 100);
+        const freq = signalFreq.value;
 
-        // Menghasilkan sinyal input
+        // Generate input signal
         const inputSignalData = timePoints.map((t) => {
-          const phase = (elapsed / 2000) * signalFreq.value * 2 * Math.PI;
-          return (
-            signalAmp.value *
-            Math.sin(2 * Math.PI * signalFreq.value * t + phase)
-          );
+          const phase = (elapsed / 2000) * freq * 2 * Math.PI;
+          return signalAmp.value * Math.sin(2 * Math.PI * freq * t + phase);
         });
 
-        // Menghasilkan sinyal output berdasarkan teori High Pass Filter
-        const outputSignalData = inputSignalData.map((input) => {
-          const frequency = signalFreq.value;
-          // Menghitung gain pada frekuensi sinyal input
-          const currentGain =
-            gain.value /
-            Math.sqrt(1 + Math.pow(cutOffFreq.value / frequency, 2));
-          // Menghitung fase output (bergeser 90 derajat di frekuensi cut-off)
-          const phaseShift = Math.atan2(cutOffFreq.value / frequency, 1);
-          return input * currentGain * Math.cos(phaseShift);
+        // Calculate filter response with safety checks
+        const ratio = freq / fc;
+        const numerator = ratio * ratio;
+        const denominator = Math.sqrt(
+          Math.pow(1 - numerator, 2) + Math.pow(ratio / Q.value, 2)
+        );
+
+        // Calculate gain with safety checks
+        let gainAtF = 0;
+        if (denominator !== 0 && isFinite(denominator)) {
+          gainAtF = (Av * numerator) / denominator;
+        }
+
+        // Calculate phase shift with safety checks
+        let phaseShift = 0;
+        if (1 - numerator !== 0 && isFinite(1 - numerator)) {
+          phaseShift = Math.atan2(ratio / Q.value, 1 - numerator);
+        }
+
+        // Generate output signal with phase shift
+        const outputSignalData = timePoints.map((t) => {
+          try {
+            const phase = (elapsed / 2000) * freq * 2 * Math.PI;
+            const sinArg = 2 * Math.PI * freq * t + phase + phaseShift;
+            const sinValue = Math.sin(sinArg);
+            return signalAmp.value * gainAtF * sinValue;
+          } catch (error) {
+            console.error("Error calculating output:", error);
+            return 0;
+          }
         });
 
+        // Update charts
         inputSignalChart.data.labels = timePoints;
         inputSignalChart.data.datasets[0].data = inputSignalData;
         inputSignalChart.update("none");
@@ -437,9 +536,20 @@ export default {
         outputSignalChart.data.datasets[0].data = outputSignalData;
         outputSignalChart.update("none");
 
-        animationFrameId = setTimeout(() => {
-          requestAnimationFrame(animate);
-        }, 50);
+        // Update signal info display
+        const outputAmplitude = signalAmp.value * gainAtF;
+        if (isFinite(outputAmplitude)) {
+          // Update the amplitude display in the signal info
+          const amplitudeDisplay = document.querySelector(
+            ".signal-info .output-amp"
+          );
+          if (amplitudeDisplay) {
+            amplitudeDisplay.textContent = `${outputAmplitude.toFixed(4)} V`;
+          }
+        }
+
+        // Continue animation
+        animationFrameId = requestAnimationFrame(animate);
       };
 
       if (!animationFrameId) {
@@ -452,25 +562,29 @@ export default {
      * Termasuk frekuensi cut-off, gain, dan tegangan output
      */
     const calculateParameters = () => {
-      // Menghitung frekuensi cut-off
-      cutOffFreq.value = 1 / (2 * Math.PI * r1.value * c1.value * 1e-6);
+      // Frekuensi cut-off orde 2
+      cutOffFreq.value =
+        1 /
+        (2 *
+          Math.PI *
+          Math.sqrt(r1.value * r2.value * c1.value * 1e-6 * c2.value * 1e-6));
 
-      // Menghitung gain
-      gain.value = -r2.value / r1.value;
+      // Gain rangkaian (non-inverting amplifier dengan feedback R3 & R4)
+      gain.value = 1 + r4.value / r3.value;
 
-      // Menghitung gain dalam dB
+      // Gain dalam dB
       gainDB.value = 20 * Math.log10(Math.abs(gain.value));
 
-      // Menghitung tegangan output berdasarkan gain
+      // Output ideal jika sinyal stasioner
       vout.value = vin.value * gain.value;
 
-      // Memperbarui grafik
+      // Perbarui grafik
       updateCharts();
     };
 
     // Menghitung parameter setiap kali nilai komponen berubah
     watch(
-      [r1, r2, c1, vin, signalFreq, signalAmp],
+      [r1, r2, c1, c2, r3, r4, vin, signalFreq, signalAmp, Q],
       () => {
         calculateParameters();
       },
@@ -775,7 +889,7 @@ export default {
               padding: 10,
               callbacks: {
                 label: function (context) {
-                  return `Amplitudo: ${context.parsed.y.toFixed(2)} V`;
+                  return `Amplitudo: ${context.parsed.y.toFixed(4)} V`;
                 },
               },
             },
@@ -822,7 +936,12 @@ export default {
                 font: {
                   size: 12,
                 },
+                callback: function (value) {
+                  return value.toFixed(4);
+                },
               },
+              suggestedMin: -1,
+              suggestedMax: 1,
             },
           },
         },
@@ -869,6 +988,7 @@ export default {
       frequencyResponse,
       inputSignal,
       outputSignal,
+      Q,
     };
   },
 };
@@ -1121,20 +1241,56 @@ input[type="number"]:focus {
   flex-direction: column;
 }
 
-.signal-graph h4 {
-  margin: 0 0 1rem;
+.graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #404040;
+}
+
+.graph-header h4 {
+  margin: 0;
   color: #ffffff;
   font-size: 1.1rem;
   font-weight: 600;
-  text-align: center;
-  border-bottom: 1px solid #404040;
-  padding-bottom: 0.5rem;
+}
+
+.signal-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-item .label {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.info-item .value {
+  color: #4a9eff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.info-item .value.above-cutoff {
+  color: #00ff9d;
+}
+
+.info-item .value.below-cutoff {
+  color: #ff4d4d;
 }
 
 .signal-graph canvas {
   flex: 1;
   width: 100% !important;
-  height: calc(100% - 2rem) !important;
+  height: calc(100% - 3rem) !important;
 }
 
 /* Responsif untuk layar kecil */
