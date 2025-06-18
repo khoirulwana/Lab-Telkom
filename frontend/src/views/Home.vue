@@ -25,14 +25,18 @@
         </div>
 
         <!-- Card Low Pass Filter (Coming Soon) -->
-        <div class="lab-card coming-soon">
+        <div class="lab-card" @click="navigateTo('/lowpass')">
           <div class="card-icon">
             <i class="fas fa-filter"></i>
           </div>
           <div class="card-content">
             <h2>Low Pass Filter</h2>
             <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            <ul class="features">
+              <li>Visualisasi respons frekuensi</li>
+              <li>Analisis gain dan cut-off frequency</li>
+              <li>Simulasi sinyal input dan output</li>
+            </ul>
           </div>
         </div>
 

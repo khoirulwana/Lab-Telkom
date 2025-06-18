@@ -5,6 +5,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/Home.vue";
 import HighPassFilter from "../views/HighPassFilter.vue";
+import LowPassFilter from "../views/LowPassFilter.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -23,6 +24,14 @@ const router = createRouter({
       component: HighPassFilter,
       meta: {
         title: "High Pass Filter - Praktikum Virtual Sistem Telekomunikasi",
+      },
+    },
+    {
+      path: "/lowpass",
+      name: "lowpass",
+      component: LowPassFilter,
+      meta: {
+        title: "Low Pass FIlter - Praktikum Virtual Sistem Telekomunikasi",
       },
     },
   ],

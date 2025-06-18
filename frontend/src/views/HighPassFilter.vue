@@ -2,6 +2,9 @@
 rangkaian High Pass Filter */
 <template>
   <div class="high-pass-filter">
+    <button type="button" class="home-button" @click="$router.push('/')">
+      <i class="fas fa-home"></i>
+    </button>
     <h1>HIGH PASS FILTER AKTIF</h1>
     <main>
       <!-- Kolom Kiri - Input dan Rangkaian -->
@@ -279,8 +282,8 @@ rangkaian High Pass Filter */
               >
                 <p>V Out</p>
                 <p>
-                  <span>{{ vout.toFixed(2) }}</span
-                  >Volt
+                  <span>{{ vout.toFixed(2) }}</span>
+                  Volt
                 </p>
               </div>
               <div
@@ -378,31 +381,6 @@ rangkaian High Pass Filter */
             </div>
           </div>
         </div>
-
-        <!-- Panel Informasi Pembelajaran -->
-        <!--
-        <div class="info-panel">
-          <h3>Informasi Pembelajaran</h3>
-          <div class="info-content">
-            <p>
-              <strong>Frekuensi Cut-Off:</strong> Frekuensi di mana gain turun
-              3dB dari gain maksimum.
-            </p>
-            <p>
-              <strong>Gain:</strong> Perbandingan antara tegangan output dan
-              input.
-            </p>
-            <p>
-              <strong>Filter Aktif:</strong> Menggunakan op-amp untuk memperkuat
-              sinyal dan membentuk respons frekuensi.
-            </p>
-            <div class="formula">
-              <p>fc = 1 / (2π × R × C)</p>
-              <p>Gain = -R2/R1</p>
-            </div>
-          </div>
-        </div>
-        -->
       </div>
     </main>
   </div>
@@ -1001,7 +979,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   color: #ffffff;
-  background: #1a1a1a;
+  background: #121212;
   min-height: 100vh;
 }
 
@@ -1012,7 +990,7 @@ export default {
   font-size: 1.8rem;
   font-weight: 600;
   color: #ffffff;
-  border-bottom: 2px solid #404040;
+  border-bottom: 2px solid #2d2d2d;
   margin-bottom: 2rem;
 }
 
@@ -1038,8 +1016,8 @@ figure img {
   max-width: 100%;
   height: auto;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-  border: 2px solid #404040;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  border: 2px solid #2d2d2d;
 }
 
 figcaption {
@@ -1075,12 +1053,12 @@ figcaption {
 
 input[type="range"] {
   flex: 1;
-  background: #2a2a2a;
+  background: #1e1e1e;
   height: 6px;
   border-radius: 3px;
   -webkit-appearance: none;
   appearance: none;
-  border: 1px solid #505050;
+  border: 1px solid #3d3d3d;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -1088,32 +1066,32 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 18px;
   height: 18px;
-  background: #4a9eff;
+  background: #2196f3;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 8px rgba(74, 158, 255, 0.4);
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.4);
   transition: all 0.2s ease;
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  background: #5fb0ff;
-  box-shadow: 0 0 12px rgba(74, 158, 255, 0.6);
+  background: #42a5f5;
+  box-shadow: 0 0 12px rgba(33, 150, 243, 0.6);
 }
 
 input[type="number"] {
   width: 100px;
   padding: 0.5rem;
-  border: 1px solid #505050;
+  border: 1px solid #3d3d3d;
   border-radius: 6px;
-  background: #2a2a2a;
+  background: #1e1e1e;
   color: #ffffff;
   font-size: 1rem;
   transition: all 0.2s ease;
 }
 
 input[type="number"]:focus {
-  border-color: #4a9eff;
-  box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.2);
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
   outline: none;
 }
 
@@ -1125,11 +1103,11 @@ input[type="number"]:focus {
 }
 
 .control-panel {
-  background: #2a2a2a;
+  background: #1e1e1e;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border: 2px solid #404040;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 2px solid #2d2d2d;
 }
 
 .control-panel h3 {
@@ -1137,7 +1115,7 @@ input[type="number"]:focus {
   color: #ffffff;
   font-size: 1.2rem;
   font-weight: 600;
-  border-bottom: 1px solid #404040;
+  border-bottom: 1px solid #2d2d2d;
   padding-bottom: 0.5rem;
 }
 
@@ -1145,26 +1123,26 @@ input[type="number"]:focus {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  background: #2a2a2a;
+  background: #1e1e1e;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border: 2px solid #404040;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 2px solid #2d2d2d;
 }
 
 .output > div {
   text-align: center;
   padding: 1rem;
-  background: #333;
+  background: #252525;
   border-radius: 8px;
   transition: all 0.2s ease;
-  border: 1px solid #404040;
+  border: 1px solid #2d2d2d;
 }
 
 .output > div:hover {
-  background: #3a3a3a;
+  background: #2a2a2a;
   transform: translateY(-2px);
-  border-color: #4a9eff;
+  border-color: #2196f3;
 }
 
 .output p:first-child {
@@ -1181,30 +1159,30 @@ input[type="number"]:focus {
 }
 
 .output span {
-  color: #4a9eff;
+  color: #2196f3;
   font-weight: 600;
 }
 
 .graph-container {
-  background: #2a2a2a;
+  background: #1e1e1e;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   height: 400px;
   position: relative;
-  border: 2px solid #404040;
+  border: 2px solid #2d2d2d;
   display: flex;
   flex-direction: column;
 }
 
 .visual-graph-container {
-  background: #2a2a2a;
+  background: #1e1e1e;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   height: auto;
   position: relative;
-  border: 2px solid #404040;
+  border: 2px solid #2d2d2d;
   display: flex;
   flex-direction: column;
 }
@@ -1216,7 +1194,7 @@ input[type="number"]:focus {
   font-weight: 600;
   text-align: center;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #404040;
+  border-bottom: 2px solid #2d2d2d;
 }
 
 .signal-graphs {
@@ -1225,18 +1203,18 @@ input[type="number"]:focus {
   gap: 2rem;
   height: auto;
   padding: 1rem;
-  background: #222;
+  background: #252525;
   border-radius: 8px;
-  border: 2px solid #404040;
+  border: 2px solid #2d2d2d;
 }
 
 .signal-graph {
   height: 300px;
-  background: #2a2a2a;
+  background: #1e1e1e;
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  border: 1px solid #404040;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2d2d2d;
   display: flex;
   flex-direction: column;
 }
@@ -1247,7 +1225,7 @@ input[type="number"]:focus {
   align-items: center;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #404040;
+  border-bottom: 1px solid #2d2d2d;
 }
 
 .graph-header h4 {
@@ -1274,17 +1252,17 @@ input[type="number"]:focus {
 }
 
 .info-item .value {
-  color: #4a9eff;
+  color: #2196f3;
   font-weight: 600;
   font-size: 0.9rem;
 }
 
 .info-item .value.above-cutoff {
-  color: #00ff9d;
+  color: #4caf50;
 }
 
 .info-item .value.below-cutoff {
-  color: #ff4d4d;
+  color: #f44336;
 }
 
 .signal-graph canvas {
@@ -1334,5 +1312,33 @@ input[type="number"]:focus {
   .signal-graph {
     height: 200px;
   }
+}
+
+.home-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px;
+  border-radius: 50%;
+  border: none;
+  background-color: #2196f3;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.4);
+}
+
+.home-button:hover {
+  background-color: #42a5f5;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.6);
+}
+
+.home-button i {
+  font-size: 1.2rem;
 }
 </style>
