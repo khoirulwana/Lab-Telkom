@@ -24,7 +24,7 @@
           </div>
         </div>
 
-        <!-- Card Low Pass Filter (Coming Soon) -->
+        <!-- Card Low Pass Filter -->
         <div class="lab-card" @click="navigateTo('/lowpass')">
           <div class="card-icon">
             <i class="fas fa-filter"></i>
@@ -40,15 +40,14 @@
           </div>
         </div>
 
-        <!-- Card Amplitude Modulation (Coming Soon) -->
-        <div class="lab-card coming-soon">
+        <!-- Card Amplitude Modulation -->
+        <div class="lab-card" @click="navigateTo('/ammodulation')">
           <div class="card-icon">
             <i class="fas fa-solid fa-wave-sine"></i>
           </div>
           <div class="card-content">
             <h2>Amplitude Modulation</h2>
-            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            <p>Simulasi dan analisis rangkaian</p>
           </div>
         </div>
 
@@ -59,7 +58,7 @@
           </div>
           <div class="card-content">
             <h2>Frequency Modulation</h2>
-            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <p>Simulasi dan analisis rangkaian</p>
             <span class="coming-soon-badge">Coming Soon</span>
           </div>
         </div>
@@ -71,7 +70,7 @@
           </div>
           <div class="card-content">
             <h2>Analog to Digital Converter</h2>
-            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <p>Simulasi dan analisis rangkaian</p>
             <span class="coming-soon-badge">Coming Soon</span>
           </div>
         </div>
@@ -83,7 +82,7 @@
           </div>
           <div class="card-content">
             <h2>Digital to Analog Converter</h2>
-            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <p>Simulasi dan analisis rangkaian</p>
             <span class="coming-soon-badge">Coming Soon</span>
           </div>
         </div>
@@ -95,7 +94,7 @@
           </div>
           <div class="card-content">
             <h2>Radio Frequency Oscillator</h2>
-            <p>Simulasi dan analisis rangkaian Low Pass Filter Aktif</p>
+            <p>Simulasi dan analisis rangkaian</p>
             <span class="coming-soon-badge">Coming Soon</span>
           </div>
         </div>
@@ -107,7 +106,7 @@
           </div>
           <div class="card-content">
             <h2>Band Pass Filter</h2>
-            <p>Simulasi dan analisis rangkaian Band Pass Filter Aktif</p>
+            <p>Simulasi dan analisis rangkaian</p>
             <span class="coming-soon-badge">Coming Soon</span>
           </div>
         </div>
@@ -119,7 +118,7 @@
           </div>
           <div class="card-content">
             <h2>Band Stop Filter</h2>
-            <p>Simulasi dan analisis rangkaian Band Stop Filter Aktif</p>
+            <p>Simulasi dan analisis rangkaian</p>
             <span class="coming-soon-badge">Coming Soon</span>
           </div>
         </div>
@@ -127,7 +126,7 @@
     </main>
 
     <footer class="footer">
-      <p>&copy; 2024 Laboratorium Virtual Elektronika. All rights reserved.</p>
+      <p>&copy; 2025 Laboratorium Virtual Elektronika. All rights reserved.</p>
     </footer>
   </div>
 </template>

@@ -5,17 +5,17 @@ rangkaian High Pass Filter */
     <button type="button" class="home-button" @click="$router.push('/')">
       <i class="fas fa-home"></i>
     </button>
-    <h1>LOW PASS FILTER AKTIF</h1>
+    <h1>AMPLITUDE MADULATION</h1>
     <main>
       <!-- Kolom Kiri - Input dan Rangkaian -->
       <div class="left-column">
         <!-- Diagram Rangkaian -->
         <figure>
           <img
-            src="@/assets/lowpass1.png"
+            src="@/assets/ammod.png"
             alt="Diagram rangkaian High Pass Filter Aktif"
           />
-          <figcaption>Rangkaian Low Pass Filter Aktif</figcaption>
+          <figcaption>Skema Rangkaian Modulasi Amplitudo</figcaption>
         </figure>
 
         <div class="inputgroup-hasilperhitungan">
@@ -322,7 +322,7 @@ rangkaian High Pass Filter */
           <div class="signal-graphs">
             <div class="signal-graph">
               <div class="graph-header">
-                <h4>Sinyal Input</h4>
+                <h4>Sinyal Informasi</h4>
                 <div class="signal-info">
                   <div class="info-item">
                     <span class="label">Frekuensi:</span>
@@ -354,7 +354,7 @@ rangkaian High Pass Filter */
             </div>
             <div class="signal-graph">
               <div class="graph-header">
-                <h4>Sinyal Output</h4>
+                <h4>Sinyal Sinyal Pembawa</h4>
                 <div class="signal-info">
                   <div class="info-item">
                     <span class="label">Frekuensi:</span>

@@ -6,6 +6,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/Home.vue";
 import HighPassFilter from "../views/HighPassFilter.vue";
 import LowPassFilter from "../views/LowPassFilter.vue";
+import AmplitudeModulation from "../views/AmplitudeModulation.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +31,14 @@ const router = createRouter({
       path: "/lowpass",
       name: "lowpass",
       component: LowPassFilter,
+      meta: {
+        title: "Low Pass FIlter - Praktikum Virtual Sistem Telekomunikasi",
+      },
+    },
+    {
+      path: "/ammodulation",
+      name: "ammodulation",
+      component: AmplitudeModulation,
       meta: {
         title: "Low Pass FIlter - Praktikum Virtual Sistem Telekomunikasi",
       },
