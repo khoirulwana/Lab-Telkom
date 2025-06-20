@@ -7,6 +7,7 @@ import HomeView from "../views/Home.vue";
 import HighPassFilter from "../views/HighPassFilter.vue";
 import LowPassFilter from "../views/LowPassFilter.vue";
 import AmplitudeModulation from "../views/AmplitudeModulation.vue";
+import FrequencyModulation from "../views/FrequencyModulation.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -41,6 +42,14 @@ const router = createRouter({
       component: AmplitudeModulation,
       meta: {
         title: "Low Pass FIlter - Praktikum Virtual Sistem Telekomunikasi",
+      },
+    },
+    {
+      path: "/freqmod",
+      name: "freqmod",
+      component: FrequencyModulation,
+      meta: {
+        title: "Frequency Modulation - Praktikum Virtual Sistem Telekomunikasi",
       },
     },
   ],

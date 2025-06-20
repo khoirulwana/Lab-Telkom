@@ -1,0 +1,1162 @@
+/** * Komponen High Pass Filter Aktif * Menampilkan simulasi dan visualisasi
+rangkaian High Pass Filter */
+<template>
+  <div class="high-pass-filter">
+    <button type="button" class="home-button" @click="$router.push('/')">
+      <i class="fas fa-home"></i>
+    </button>
+    <h1>MODULASI FREKUENSI</h1>
+    <main>
+      <!-- Kolom Kiri - Input dan Rangkaian -->
+      <div class="left-column">
+        <!-- Diagram Rangkaian -->
+        <figure>
+          <img
+            src="@/assets/lowpass1.png"
+            alt="Diagram rangkaian High Pass Filter Aktif"
+          />
+          <figcaption>Skema Rangkaian Modulasi Frekuensi</figcaption>
+        </figure>
+
+        <div class="signal-graphs">
+          <div class="signal-graph">
+            <div class="graph-header">
+              <h4>Sinyal Input</h4>
+              <div class="signal-info">
+                <div class="info-item">
+                  <span class="label">Frekuensi:</span>
+                  <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Amplitudo:</span>
+                  <span class="value">{{ signalAmp.toFixed(2) }} V</span>
+                </div>
+              </div>
+            </div>
+            <!-- Kontrol Frekuensi -->
+            <div
+              class="input-group"
+              data-tippy-content="Frekuensi sinyal input yang akan difilter"
+            >
+              <label for="signal-freq">Frekuensi Sinyal (Hz):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="signal-freq-slider"
+                  v-model.number="signalFreq"
+                  min="1"
+                  max="20000"
+                  step="1"
+                />
+                <input
+                  type="number"
+                  id="signal-freq"
+                  v-model.number="signalFreq"
+                  placeholder="Frekuensi dalam Hz"
+                />
+              </div>
+            </div>
+            <!-- Kontrol Amplitudo -->
+            <div
+              class="input-group"
+              data-tippy-content="Amplitudo sinyal input"
+            >
+              <label for="signal-amp">Amplitudo Sinyal (V):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="signal-amp-slider"
+                  v-model.number="signalAmp"
+                  min="0.1"
+                  max="10"
+                  step="0.1"
+                />
+                <input
+                  type="number"
+                  id="signal-amp"
+                  v-model.number="signalAmp"
+                  placeholder="Amplitudo dalam Volt"
+                />
+              </div>
+            </div>
+            <canvas ref="inputSignal"></canvas>
+          </div>
+          <div class="signal-graph">
+            <div class="graph-header">
+              <h4>Sinyal Output</h4>
+              <div class="signal-info">
+                <div class="info-item">
+                  <span class="label">Frekuensi:</span>
+                  <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Amplitudo:</span>
+                  <span class="value output-amp"
+                    >{{ signalAmp.toFixed(2) }} V</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Kontrol Frekuensi -->
+            <div
+              class="input-group"
+              data-tippy-content="Frekuensi sinyal input yang akan difilter"
+            >
+              <label for="signal-freq">Frekuensi Sinyal (Hz):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="signal-freq-slider"
+                  v-model.number="signalFreq"
+                  min="1"
+                  max="20000"
+                  step="1"
+                />
+                <input
+                  type="number"
+                  id="signal-freq"
+                  v-model.number="signalFreq"
+                  placeholder="Frekuensi dalam Hz"
+                />
+              </div>
+            </div>
+            <!-- Kontrol Amplitudo -->
+            <div
+              class="input-group"
+              data-tippy-content="Amplitudo sinyal input"
+            >
+              <label for="signal-amp">Amplitudo Sinyal (V):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="signal-amp-slider"
+                  v-model.number="signalAmp"
+                  min="0.1"
+                  max="10"
+                  step="0.1"
+                />
+                <input
+                  type="number"
+                  id="signal-amp"
+                  v-model.number="signalAmp"
+                  placeholder="Amplitudo dalam Volt"
+                />
+              </div>
+            </div>
+            <canvas ref="outputSignal"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan - Grafik -->
+      <div class="right-column">
+        <!-- Grafik Respons Frekuensi -->
+        <div class="graph-container">
+          <h3>Respons Frekuensi</h3>
+          <canvas ref="frequencyResponse"></canvas>
+        </div>
+
+        <!-- Visualisasi Sinyal -->
+        <div class="visual-graph-container">
+          <h3>Visualisasi Sinyal</h3>
+          <div class="signal-graphs">
+            <div class="signal-graph">
+              <div class="graph-header">
+                <h4>Sinyal Input</h4>
+                <div class="signal-info">
+                  <div class="info-item">
+                    <span class="label">Frekuensi:</span>
+                    <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Amplitudo:</span>
+                    <span class="value">{{ signalAmp.toFixed(2) }} V</span>
+                  </div>
+                </div>
+              </div>
+              <canvas ref="inputSignal"></canvas>
+            </div>
+            <div class="signal-graph">
+              <div class="graph-header">
+                <h4>Sinyal Output</h4>
+                <div class="signal-info">
+                  <div class="info-item">
+                    <span class="label">Frekuensi:</span>
+                    <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="label">Amplitudo:</span>
+                    <span class="value output-amp"
+                      >{{ signalAmp.toFixed(2) }} V</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <canvas ref="outputSignal"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</template>
+
+<script>
+/**
+ * Komponen High Pass Filter
+ * Mengimplementasikan simulasi dan visualisasi rangkaian High Pass Filter Aktif
+ */
+import { ref, onMounted, watch, onUnmounted } from "vue";
+import { Chart, registerables } from "chart.js";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/animations/scale.css";
+
+// Mendaftarkan komponen Chart.js
+Chart.register(...registerables);
+
+export default {
+  name: "HighPassFilter",
+  setup() {
+    // Variabel state
+    const vin = ref(1);
+    const c1 = ref(0.1);
+    const c2 = ref(0.1);
+    const r1 = ref(10000);
+    const r2 = ref(10000);
+    const r3 = ref(10000);
+    const r4 = ref(10000);
+    const signalFreq = ref(10);
+    const signalAmp = ref(1);
+    const cutOffFreq = ref(0);
+    const vout = ref(0);
+    const gain = ref(0);
+    const gainDB = ref(0);
+    const Q = ref(0.707); // Faktor kualitas default Butterworth
+
+    // Referensi untuk grafik
+    const frequencyResponse = ref(null);
+    const inputSignal = ref(null);
+    const outputSignal = ref(null);
+
+    // Instance grafik
+    let frequencyChart = null;
+    let inputSignalChart = null;
+    let outputSignalChart = null;
+    let animationFrameId = null;
+    let startTime = null;
+
+    /**
+     * Memperbarui semua grafik
+     * Menghitung dan menampilkan respons frekuensi serta sinyal
+     */
+    const updateCharts = () => {
+      if (!frequencyChart || !inputSignalChart || !outputSignalChart) return;
+
+      const fc = cutOffFreq.value;
+      const Av = gain.value;
+
+      // Respons frekuensi orde 2 (Butterworth/Sallen-Key)
+      const frequencies = Array.from({ length: 100 }, (_, i) =>
+        Math.pow(10, i / 10)
+      );
+      const gains = frequencies.map((f) => {
+        const ratio = f / fc;
+        const numerator = gain.value;
+        const denominator = Math.sqrt(
+          Math.pow(1 - Math.pow(ratio, 2), 2) + Math.pow(ratio / Q.value, 2)
+        );
+
+        const gainAtF = numerator / denominator;
+        return 20 * Math.log10(Math.abs(gainAtF));
+      });
+
+      frequencyChart.data.labels = frequencies;
+      frequencyChart.data.datasets[0].data = gains;
+      frequencyChart.update();
+
+      // Animasi sinyal input/output
+      const animate = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+
+        const timePoints = Array.from({ length: 100 }, (_, i) => i / 100);
+        const freq = signalFreq.value;
+
+        // Generate input signal
+        const inputSignalData = timePoints.map((t) => {
+          const phase = (elapsed / 2000) * freq * 2 * Math.PI;
+          return signalAmp.value * Math.sin(2 * Math.PI * freq * t + phase);
+        });
+
+        // Calculate filter response with safety checks
+        const ratio = freq / fc;
+        const numerator = ratio * ratio;
+        const denominator = Math.sqrt(
+          Math.pow(1 - numerator, 2) + Math.pow(ratio / Q.value, 2)
+        );
+
+        // Calculate gain with safety checks
+        let gainAtF = 0;
+        if (denominator !== 0 && isFinite(denominator)) {
+          gainAtF = (Av * numerator) / denominator;
+        }
+
+        // Calculate phase shift with safety checks
+        let phaseShift = 0;
+        if (1 - numerator !== 0 && isFinite(1 - numerator)) {
+          phaseShift = Math.atan2(ratio / Q.value, 1 - numerator);
+        }
+
+        // Generate output signal with phase shift
+        const outputSignalData = timePoints.map((t) => {
+          try {
+            const phase = (elapsed / 2000) * freq * 2 * Math.PI;
+            const sinArg = 2 * Math.PI * freq * t + phase + phaseShift;
+            const sinValue = Math.sin(sinArg);
+            return signalAmp.value * gainAtF * sinValue;
+          } catch (error) {
+            console.error("Error calculating output:", error);
+            return 0;
+          }
+        });
+
+        // Update charts
+        inputSignalChart.data.labels = timePoints;
+        inputSignalChart.data.datasets[0].data = inputSignalData;
+        inputSignalChart.update("none");
+
+        outputSignalChart.data.labels = timePoints;
+        outputSignalChart.data.datasets[0].data = outputSignalData;
+        outputSignalChart.update("none");
+
+        // Update signal info display
+        const outputAmplitude = signalAmp.value * gainAtF;
+        if (isFinite(outputAmplitude)) {
+          // Update the amplitude display in the signal info
+          const amplitudeDisplay = document.querySelector(
+            ".signal-info .output-amp"
+          );
+          if (amplitudeDisplay) {
+            amplitudeDisplay.textContent = `${outputAmplitude.toFixed(4)} V`;
+          }
+        }
+
+        // Continue animation
+        animationFrameId = requestAnimationFrame(animate);
+      };
+
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    /**
+     * Menghitung parameter rangkaian
+     * Termasuk frekuensi cut-off, gain, dan tegangan output
+     */
+    const calculateParameters = () => {
+      // Ubah µF ke F
+      const C1 = c1.value * 1e-6;
+      const C2 = c2.value * 1e-6;
+      const R1 = r1.value;
+      const R2 = r2.value;
+
+      // Perhitungan frekuensi cut-off untuk LPF orde 2 Sallen-Key
+      cutOffFreq.value = 1 / (2 * Math.PI * Math.sqrt(R1 * R2 * C1 * C2));
+
+      // Gain (penguat non-inverting) dengan R3 dan R4
+      gain.value = 1 + r4.value / r3.value;
+
+      // Gain dalam dB
+      gainDB.value = 20 * Math.log10(Math.abs(gain.value));
+
+      // Tegangan output ideal (tanpa respon frekuensi)
+      vout.value = vin.value * gain.value;
+
+      // Perbarui grafik
+      updateCharts();
+    };
+
+    // Menghitung parameter setiap kali nilai komponen berubah
+    watch(
+      [r1, r2, c1, c2, r3, r4, vin, signalFreq, signalAmp, Q],
+      () => {
+        calculateParameters();
+      },
+      { immediate: true }
+    );
+
+    /**
+     * Menginisialisasi grafik
+     * Membuat instance Chart.js untuk setiap grafik
+     */
+    const initializeCharts = () => {
+      // Menginisialisasi grafik respons frekuensi
+      const freqCtx = frequencyResponse.value.getContext("2d");
+      frequencyChart = new Chart(freqCtx, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "Respons Frekuensi",
+              data: [],
+              borderColor: "#00ff9d",
+              borderWidth: 2,
+              fill: false,
+              tension: 0.4,
+              pointRadius: 3,
+              pointHoverRadius: 6,
+              pointBackgroundColor: "#00ff9d",
+              pointBorderColor: "#ffffff",
+              pointBorderWidth: 1,
+              pointHoverBackgroundColor: "#00ff9d",
+              pointHoverBorderColor: "#fff",
+              pointHoverBorderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 0,
+          },
+          plugins: {
+            legend: {
+              position: "top",
+              labels: {
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              titleColor: "#fff",
+              bodyColor: "#e0e0e0",
+              titleFont: {
+                size: 14,
+                weight: "bold",
+              },
+              bodyFont: {
+                size: 13,
+              },
+              padding: 10,
+              callbacks: {
+                label: function (context) {
+                  return `Gain: ${context.parsed.y.toFixed(2)} dB`;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              type: "logarithmic",
+              title: {
+                display: true,
+                text: "Frekuensi (Hz)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+                callback: function (value) {
+                  return value.toLocaleString();
+                },
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Gain (dB)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      // Menginisialisasi grafik sinyal input
+      const inputCtx = inputSignal.value.getContext("2d");
+      inputSignalChart = new Chart(inputCtx, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "Sinyal Input",
+              data: [],
+              borderColor: "#ff00ff",
+              borderWidth: 2,
+              fill: false,
+              tension: 0.4,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHoverBackgroundColor: "#ff00ff",
+              pointHoverBorderColor: "#fff",
+              pointHoverBorderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 0,
+          },
+          layout: {
+            padding: {
+              top: 10,
+              right: 10,
+              bottom: 10,
+              left: 10,
+            },
+          },
+          plugins: {
+            legend: {
+              position: "top",
+              labels: {
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              titleColor: "#fff",
+              bodyColor: "#e0e0e0",
+              titleFont: {
+                size: 14,
+                weight: "bold",
+              },
+              bodyFont: {
+                size: 13,
+              },
+              padding: 10,
+              callbacks: {
+                label: function (context) {
+                  return `Amplitudo: ${context.parsed.y.toFixed(2)} V`;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Waktu (s)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+                maxTicksLimit: 8,
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Amplitudo (V)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      // Menginisialisasi grafik sinyal output
+      const outputCtx = outputSignal.value.getContext("2d");
+      outputSignalChart = new Chart(outputCtx, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "Sinyal Output",
+              data: [],
+              borderColor: "#00ffff",
+              borderWidth: 2,
+              fill: false,
+              tension: 0.4,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHoverBackgroundColor: "#00ffff",
+              pointHoverBorderColor: "#fff",
+              pointHoverBorderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 0,
+          },
+          layout: {
+            padding: {
+              top: 10,
+              right: 10,
+              bottom: 10,
+              left: 10,
+            },
+          },
+          plugins: {
+            legend: {
+              position: "top",
+              labels: {
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              titleColor: "#fff",
+              bodyColor: "#e0e0e0",
+              titleFont: {
+                size: 14,
+                weight: "bold",
+              },
+              bodyFont: {
+                size: 13,
+              },
+              padding: 10,
+              callbacks: {
+                label: function (context) {
+                  return `Amplitudo: ${context.parsed.y.toFixed(4)} V`;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Waktu (s)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+                maxTicksLimit: 8,
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Amplitudo (V)",
+                color: "#e0e0e0",
+                font: {
+                  size: 14,
+                  weight: "bold",
+                },
+              },
+              grid: {
+                color: "rgba(255, 255, 255, 0.1)",
+                drawBorder: false,
+              },
+              ticks: {
+                color: "#e0e0e0",
+                font: {
+                  size: 12,
+                },
+                callback: function (value) {
+                  return value.toFixed(4);
+                },
+              },
+              suggestedMin: -1,
+              suggestedMax: 1,
+            },
+          },
+        },
+      });
+
+      // Perhitungan awal
+      calculateParameters();
+    };
+
+    onMounted(() => {
+      initializeCharts();
+      // Menginisialisasi tooltip
+      tippy("[data-tippy-content]", {
+        animation: "scale",
+        duration: 200,
+      });
+    });
+
+    // Membersihkan frame animasi saat komponen di-unmount
+    onUnmounted(() => {
+      if (animationFrameId) {
+        if (typeof animationFrameId === "number") {
+          cancelAnimationFrame(animationFrameId);
+        } else {
+          clearTimeout(animationFrameId);
+        }
+      }
+    });
+
+    return {
+      vin,
+      c1,
+      c2,
+      r1,
+      r2,
+      r3,
+      r4,
+      signalFreq,
+      signalAmp,
+      cutOffFreq,
+      vout,
+      gain,
+      gainDB,
+      frequencyResponse,
+      inputSignal,
+      outputSignal,
+      Q,
+    };
+  },
+};
+</script>
+
+<style scoped>
+/* Gaya untuk komponen High Pass Filter */
+.high-pass-filter {
+  padding: 2rem;
+  width: 90%;
+  margin: 0 auto;
+  color: #ffffff;
+  background: #121212;
+  min-height: 100vh;
+}
+
+.high-pass-filter h1 {
+  margin: 0;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  border-bottom: 2px solid #2d2d2d;
+  margin-bottom: 2rem;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 2rem;
+}
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+figure {
+  margin: 0;
+  text-align: center;
+}
+
+figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  border: 2px solid #2d2d2d;
+}
+
+figcaption {
+  margin-top: 1rem;
+  color: #e0e0e0;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.inputgroup-hasilperhitungan {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.input-with-slider {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+input[type="range"] {
+  flex: 1;
+  background: #1e1e1e;
+  height: 6px;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid #3d3d3d;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #2196f3;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.4);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #42a5f5;
+  box-shadow: 0 0 12px rgba(33, 150, 243, 0.6);
+}
+
+input[type="number"] {
+  width: 100px;
+  padding: 0.5rem;
+  border: 1px solid #3d3d3d;
+  border-radius: 6px;
+  background: #1e1e1e;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+input[type="number"]:focus {
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+  outline: none;
+}
+
+.controlpanel-hasilperhitungan {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 2rem;
+}
+
+.control-panel {
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 2px solid #2d2d2d;
+}
+
+.control-panel h3 {
+  margin: 0 0 1rem;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 1px solid #2d2d2d;
+  padding-bottom: 0.5rem;
+}
+
+.output {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 2px solid #2d2d2d;
+}
+
+.output > div {
+  text-align: center;
+  padding: 1rem;
+  background: #252525;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid #2d2d2d;
+}
+
+.output > div:hover {
+  background: #2a2a2a;
+  transform: translateY(-2px);
+  border-color: #2196f3;
+}
+
+.output p:first-child {
+  margin: 0 0 0.5rem;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+.output p:last-child {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.output span {
+  color: #2196f3;
+  font-weight: 600;
+}
+
+.graph-container {
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  height: 400px;
+  position: relative;
+  border: 2px solid #2d2d2d;
+  display: flex;
+  flex-direction: column;
+}
+
+.visual-graph-container {
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  height: auto;
+  position: relative;
+  border: 2px solid #2d2d2d;
+  display: flex;
+  flex-direction: column;
+}
+
+.graph-container h3 {
+  margin: 0 0 1.5rem;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #2d2d2d;
+}
+
+.signal-graphs {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 2rem;
+  height: auto;
+  padding: 1rem;
+  background: #252525;
+  border-radius: 8px;
+  border: 2px solid #2d2d2d;
+}
+
+.signal-graph {
+  height: 300px;
+  background: #1e1e1e;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2d2d2d;
+  display: flex;
+  flex-direction: column;
+}
+
+.graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #2d2d2d;
+}
+
+.graph-header h4 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.signal-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-item .label {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.info-item .value {
+  color: #2196f3;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.info-item .value.above-cutoff {
+  color: #4caf50;
+}
+
+.info-item .value.below-cutoff {
+  color: #f44336;
+}
+
+.signal-graph canvas {
+  flex: 1;
+  width: 100% !important;
+  height: calc(100% - 3rem) !important;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 1200px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .graph-container {
+    height: 350px;
+  }
+
+  .signal-graphs {
+    height: 300px;
+  }
+
+  .signal-graph {
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .high-pass-filter {
+    padding: 1rem;
+  }
+
+  .signal-graphs {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    height: 300px;
+  }
+
+  .output {
+    grid-template-columns: 1fr;
+  }
+
+  .graph-container {
+    height: 300px;
+  }
+
+  .signal-graph {
+    height: 200px;
+  }
+}
+
+.home-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px;
+  border-radius: 50%;
+  border: none;
+  background-color: #2196f3;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.4);
+}
+
+.home-button:hover {
+  background-color: #42a5f5;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.6);
+}
+
+.home-button i {
+  font-size: 1.2rem;
+}
+</style>

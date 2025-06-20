@@ -51,15 +51,14 @@
           </div>
         </div>
 
-        <!-- Card Frequency Modulation (Coming Soon) -->
-        <div class="lab-card coming-soon">
+        <!-- Card Frequency Modulation -->
+        <div class="lab-card" @click="navigateTo('/freqmod')">
           <div class="card-icon">
             <i class="fas fa-solid fa-wave-sine"></i>
           </div>
           <div class="card-content">
             <h2>Frequency Modulation</h2>
             <p>Simulasi dan analisis rangkaian</p>
-            <span class="coming-soon-badge">Coming Soon</span>
           </div>
         </div>
 
