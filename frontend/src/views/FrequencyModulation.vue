@@ -6,38 +6,30 @@ rangkaian High Pass Filter */
       <i class="fas fa-home"></i>
     </button>
     <h1>MODULASI FREKUENSI</h1>
+    <!-- <p>
+      Modulasi frekuensi (FM) adalah teknik modulasi yang mengubah frekuensi
+      sinyal pembawa sesuai dengan amplitudo sinyal informasi. Ini digunakan
+      dalam radio FM, televisi, dan komunikasi nirkabel lainnya.
+    </p> -->
     <main>
       <!-- Kolom Kiri - Input dan Rangkaian -->
       <div class="left-column">
         <!-- Diagram Rangkaian -->
         <figure>
           <img
-            src="@/assets/lowpass1.png"
+            src="@/assets/ammod.png"
             alt="Diagram rangkaian High Pass Filter Aktif"
           />
-          <figcaption>Skema Rangkaian Modulasi Frekuensi</figcaption>
+          <figcaption>Skema Rangkaian Modulasi Amplitudo</figcaption>
         </figure>
 
-        <div class="signal-graphs">
-          <div class="signal-graph">
-            <div class="graph-header">
-              <h4>Sinyal Input</h4>
-              <div class="signal-info">
-                <div class="info-item">
-                  <span class="label">Frekuensi:</span>
-                  <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
-                </div>
-                <div class="info-item">
-                  <span class="label">Amplitudo:</span>
-                  <span class="value">{{ signalAmp.toFixed(2) }} V</span>
-                </div>
+        <div class="visual-graph-container">
+          <h3>Kontrol Sinyal Input</h3>
+          <div class="signal-graphs">
+            <div class="signal-graph">
+              <div class="graph-header">
+                <h4>Sinyal Informasi</h4>
               </div>
-            </div>
-            <!-- Kontrol Frekuensi -->
-            <div
-              class="input-group"
-              data-tippy-content="Frekuensi sinyal input yang akan difilter"
-            >
               <label for="signal-freq">Frekuensi Sinyal (Hz):</label>
               <div class="input-with-slider">
                 <input
@@ -55,12 +47,25 @@ rangkaian High Pass Filter */
                   placeholder="Frekuensi dalam Hz"
                 />
               </div>
-            </div>
-            <!-- Kontrol Amplitudo -->
-            <div
-              class="input-group"
-              data-tippy-content="Amplitudo sinyal input"
-            >
+
+              <label for="freq-deviation">Deviasi Frekuensi Maks (Hz):</label>
+              <div class="input-with-slider">
+                <input
+                  type="range"
+                  id="freq-deviation-slider"
+                  v-model.number="freqDeviation"
+                  min="1"
+                  max="10000"
+                  step="1"
+                />
+                <input
+                  type="number"
+                  id="freq-deviation"
+                  v-model.number="freqDeviation"
+                  placeholder="Deviasi Frekuensi Maksimum"
+                />
+              </div>
+
               <label for="signal-amp">Amplitudo Sinyal (V):</label>
               <div class="input-with-slider">
                 <input
@@ -79,71 +84,45 @@ rangkaian High Pass Filter */
                 />
               </div>
             </div>
-            <canvas ref="inputSignal"></canvas>
-          </div>
-          <div class="signal-graph">
-            <div class="graph-header">
-              <h4>Sinyal Output</h4>
-              <div class="signal-info">
-                <div class="info-item">
-                  <span class="label">Frekuensi:</span>
-                  <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
-                </div>
-                <div class="info-item">
-                  <span class="label">Amplitudo:</span>
-                  <span class="value output-amp"
-                    >{{ signalAmp.toFixed(2) }} V</span
-                  >
-                </div>
+            <div class="signal-graph">
+              <div class="graph-header">
+                <h4>Sinyal Pembawa</h4>
               </div>
-            </div>
-            <!-- Kontrol Frekuensi -->
-            <div
-              class="input-group"
-              data-tippy-content="Frekuensi sinyal input yang akan difilter"
-            >
-              <label for="signal-freq">Frekuensi Sinyal (Hz):</label>
+              <label for="carrier-freq">Frekuensi Pembawa (Hz):</label>
               <div class="input-with-slider">
                 <input
                   type="range"
-                  id="signal-freq-slider"
-                  v-model.number="signalFreq"
+                  id="carrier-freq-slider"
+                  v-model.number="carrierFreq"
                   min="1"
                   max="20000"
                   step="1"
                 />
                 <input
                   type="number"
-                  id="signal-freq"
-                  v-model.number="signalFreq"
+                  id="carrier-freq"
+                  v-model.number="carrierFreq"
                   placeholder="Frekuensi dalam Hz"
                 />
               </div>
-            </div>
-            <!-- Kontrol Amplitudo -->
-            <div
-              class="input-group"
-              data-tippy-content="Amplitudo sinyal input"
-            >
-              <label for="signal-amp">Amplitudo Sinyal (V):</label>
+              <label for="carrier-amp">Amplitudo Pembawa (V):</label>
               <div class="input-with-slider">
                 <input
                   type="range"
-                  id="signal-amp-slider"
-                  v-model.number="signalAmp"
+                  id="carrier-amp-slider"
+                  v-model.number="carrierAmp"
                   min="0.1"
                   max="10"
                   step="0.1"
                 />
                 <input
                   type="number"
-                  id="signal-amp"
-                  v-model.number="signalAmp"
+                  id="carrier-amp"
+                  v-model.number="carrierAmp"
                   placeholder="Amplitudo dalam Volt"
                 />
               </div>
             </div>
-            <canvas ref="outputSignal"></canvas>
           </div>
         </div>
       </div>
@@ -152,17 +131,16 @@ rangkaian High Pass Filter */
       <div class="right-column">
         <!-- Grafik Respons Frekuensi -->
         <div class="graph-container">
-          <h3>Respons Frekuensi</h3>
+          <h3>Sinyal Termodulasi FM</h3>
           <canvas ref="frequencyResponse"></canvas>
         </div>
-
         <!-- Visualisasi Sinyal -->
         <div class="visual-graph-container">
           <h3>Visualisasi Sinyal</h3>
           <div class="signal-graphs">
             <div class="signal-graph">
               <div class="graph-header">
-                <h4>Sinyal Input</h4>
+                <h4>Sinyal Informasi</h4>
                 <div class="signal-info">
                   <div class="info-item">
                     <span class="label">Frekuensi:</span>
@@ -178,17 +156,15 @@ rangkaian High Pass Filter */
             </div>
             <div class="signal-graph">
               <div class="graph-header">
-                <h4>Sinyal Output</h4>
+                <h4>Sinyal Sinyal Pembawa</h4>
                 <div class="signal-info">
                   <div class="info-item">
                     <span class="label">Frekuensi:</span>
-                    <span class="value">{{ signalFreq.toFixed(2) }} Hz</span>
+                    <span class="value">{{ carrierFreq.toFixed(2) }} Hz</span>
                   </div>
                   <div class="info-item">
                     <span class="label">Amplitudo:</span>
-                    <span class="value output-amp"
-                      >{{ signalAmp.toFixed(2) }} V</span
-                    >
+                    <span class="value">{{ carrierAmp.toFixed(2) }} V</span>
                   </div>
                 </div>
               </div>
@@ -206,193 +182,90 @@ rangkaian High Pass Filter */
  * Komponen High Pass Filter
  * Mengimplementasikan simulasi dan visualisasi rangkaian High Pass Filter Aktif
  */
-import { ref, onMounted, watch, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { Chart, registerables } from "chart.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale.css";
+import { watch } from "vue";
 
 // Mendaftarkan komponen Chart.js
 Chart.register(...registerables);
 
 export default {
-  name: "HighPassFilter",
+  name: "AmplitudeModulation",
   setup() {
-    // Variabel state
-    const vin = ref(1);
-    const c1 = ref(0.1);
-    const c2 = ref(0.1);
-    const r1 = ref(10000);
-    const r2 = ref(10000);
-    const r3 = ref(10000);
-    const r4 = ref(10000);
-    const signalFreq = ref(10);
-    const signalAmp = ref(1);
-    const cutOffFreq = ref(0);
-    const vout = ref(0);
-    const gain = ref(0);
-    const gainDB = ref(0);
-    const Q = ref(0.707); // Faktor kualitas default Butterworth
-
-    // Referensi untuk grafik
-    const frequencyResponse = ref(null);
+    // State for Amplitude Modulation
+    const signalFreq = ref(5);
+    const signalAmp = ref(0.2);
+    const carrierFreq = ref(50);
+    const carrierAmp = ref(0.2);
     const inputSignal = ref(null);
     const outputSignal = ref(null);
-
-    // Instance grafik
-    let frequencyChart = null;
+    const frequencyResponse = ref(null);
     let inputSignalChart = null;
     let outputSignalChart = null;
+    let frequencyChart = null;
     let animationFrameId = null;
     let startTime = null;
+    const freqDeviation = ref(50); // dalam Hz, bisa disesuaikan
 
-    /**
-     * Memperbarui semua grafik
-     * Menghitung dan menampilkan respons frekuensi serta sinyal
-     */
+    // Update charts for FM
     const updateCharts = () => {
-      if (!frequencyChart || !inputSignalChart || !outputSignalChart) return;
+      if (!inputSignalChart || !outputSignalChart || !frequencyChart) return;
 
-      const fc = cutOffFreq.value;
-      const Av = gain.value;
+      cancelAnimationFrame(animationFrameId); // Hentikan animasi sebelumnya
+      startTime = null; // Reset waktu awal agar fase diperbarui
 
-      // Respons frekuensi orde 2 (Butterworth/Sallen-Key)
-      const frequencies = Array.from({ length: 100 }, (_, i) =>
-        Math.pow(10, i / 10)
-      );
-      const gains = frequencies.map((f) => {
-        const ratio = f / fc;
-        const numerator = gain.value;
-        const denominator = Math.sqrt(
-          Math.pow(1 - Math.pow(ratio, 2), 2) + Math.pow(ratio / Q.value, 2)
-        );
-
-        const gainAtF = numerator / denominator;
-        return 20 * Math.log10(Math.abs(gainAtF));
-      });
-
-      frequencyChart.data.labels = frequencies;
-      frequencyChart.data.datasets[0].data = gains;
-      frequencyChart.update();
-
-      // Animasi sinyal input/output
       const animate = (timestamp) => {
         if (!startTime) startTime = timestamp;
-        const elapsed = timestamp - startTime;
+        const elapsed = (timestamp - startTime) / 1000; // detik
 
         const timePoints = Array.from({ length: 100 }, (_, i) => i / 100);
-        const freq = signalFreq.value;
 
-        // Generate input signal
-        const inputSignalData = timePoints.map((t) => {
-          const phase = (elapsed / 2000) * freq * 2 * Math.PI;
-          return signalAmp.value * Math.sin(2 * Math.PI * freq * t + phase);
-        });
-
-        // Calculate filter response with safety checks
-        const ratio = freq / fc;
-        const numerator = ratio * ratio;
-        const denominator = Math.sqrt(
-          Math.pow(1 - numerator, 2) + Math.pow(ratio / Q.value, 2)
+        const infoData = timePoints.map(
+          (t) =>
+            signalAmp.value *
+            Math.sin(2 * Math.PI * signalFreq.value * (t + elapsed))
+        );
+        const carrierData = timePoints.map(
+          (t) =>
+            carrierAmp.value *
+            Math.sin(2 * Math.PI * carrierFreq.value * (t + elapsed))
         );
 
-        // Calculate gain with safety checks
-        let gainAtF = 0;
-        if (denominator !== 0 && isFinite(denominator)) {
-          gainAtF = (Av * numerator) / denominator;
-        }
+        const fmData = timePoints.map(
+          (t) =>
+            carrierAmp.value *
+            Math.sin(
+              2 * Math.PI * carrierFreq.value * (t + elapsed) +
+                2 *
+                  Math.PI *
+                  (freqDeviation.value / signalFreq.value) *
+                  Math.sin(2 * Math.PI * signalFreq.value * (t + elapsed))
+            )
+        );
 
-        // Calculate phase shift with safety checks
-        let phaseShift = 0;
-        if (1 - numerator !== 0 && isFinite(1 - numerator)) {
-          phaseShift = Math.atan2(ratio / Q.value, 1 - numerator);
-        }
-
-        // Generate output signal with phase shift
-        const outputSignalData = timePoints.map((t) => {
-          try {
-            const phase = (elapsed / 2000) * freq * 2 * Math.PI;
-            const sinArg = 2 * Math.PI * freq * t + phase + phaseShift;
-            const sinValue = Math.sin(sinArg);
-            return signalAmp.value * gainAtF * sinValue;
-          } catch (error) {
-            console.error("Error calculating output:", error);
-            return 0;
-          }
-        });
-
-        // Update charts
         inputSignalChart.data.labels = timePoints;
-        inputSignalChart.data.datasets[0].data = inputSignalData;
+        inputSignalChart.data.datasets[0].data = infoData;
         inputSignalChart.update("none");
 
         outputSignalChart.data.labels = timePoints;
-        outputSignalChart.data.datasets[0].data = outputSignalData;
+        outputSignalChart.data.datasets[0].data = carrierData;
         outputSignalChart.update("none");
 
-        // Update signal info display
-        const outputAmplitude = signalAmp.value * gainAtF;
-        if (isFinite(outputAmplitude)) {
-          // Update the amplitude display in the signal info
-          const amplitudeDisplay = document.querySelector(
-            ".signal-info .output-amp"
-          );
-          if (amplitudeDisplay) {
-            amplitudeDisplay.textContent = `${outputAmplitude.toFixed(4)} V`;
-          }
-        }
+        frequencyChart.data.labels = timePoints;
+        frequencyChart.data.datasets[0].data = fmData;
+        frequencyChart.update("none");
 
-        // Continue animation
         animationFrameId = requestAnimationFrame(animate);
       };
 
-      if (!animationFrameId) {
-        animationFrameId = requestAnimationFrame(animate);
-      }
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    /**
-     * Menghitung parameter rangkaian
-     * Termasuk frekuensi cut-off, gain, dan tegangan output
-     */
-    const calculateParameters = () => {
-      // Ubah µF ke F
-      const C1 = c1.value * 1e-6;
-      const C2 = c2.value * 1e-6;
-      const R1 = r1.value;
-      const R2 = r2.value;
-
-      // Perhitungan frekuensi cut-off untuk LPF orde 2 Sallen-Key
-      cutOffFreq.value = 1 / (2 * Math.PI * Math.sqrt(R1 * R2 * C1 * C2));
-
-      // Gain (penguat non-inverting) dengan R3 dan R4
-      gain.value = 1 + r4.value / r3.value;
-
-      // Gain dalam dB
-      gainDB.value = 20 * Math.log10(Math.abs(gain.value));
-
-      // Tegangan output ideal (tanpa respon frekuensi)
-      vout.value = vin.value * gain.value;
-
-      // Perbarui grafik
-      updateCharts();
-    };
-
-    // Menghitung parameter setiap kali nilai komponen berubah
-    watch(
-      [r1, r2, c1, c2, r3, r4, vin, signalFreq, signalAmp, Q],
-      () => {
-        calculateParameters();
-      },
-      { immediate: true }
-    );
-
-    /**
-     * Menginisialisasi grafik
-     * Membuat instance Chart.js untuk setiap grafik
-     */
+    // Initialize charts
     const initializeCharts = () => {
-      // Menginisialisasi grafik respons frekuensi
       const freqCtx = frequencyResponse.value.getContext("2d");
       frequencyChart = new Chart(freqCtx, {
         type: "line",
@@ -400,113 +273,39 @@ export default {
           labels: [],
           datasets: [
             {
-              label: "Respons Frekuensi",
+              label: "Sinyal FM (Domain Waktu)",
               data: [],
               borderColor: "#00ff9d",
               borderWidth: 2,
               fill: false,
               tension: 0.4,
-              pointRadius: 3,
-              pointHoverRadius: 6,
-              pointBackgroundColor: "#00ff9d",
-              pointBorderColor: "#ffffff",
-              pointBorderWidth: 1,
-              pointHoverBackgroundColor: "#00ff9d",
-              pointHoverBorderColor: "#fff",
-              pointHoverBorderWidth: 2,
+              pointRadius: 0,
             },
           ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animation: {
-            duration: 0,
-          },
-          plugins: {
-            legend: {
-              position: "top",
-              labels: {
-                color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
-              },
-            },
-            tooltip: {
-              mode: "index",
-              intersect: false,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              titleColor: "#fff",
-              bodyColor: "#e0e0e0",
-              titleFont: {
-                size: 14,
-                weight: "bold",
-              },
-              bodyFont: {
-                size: 13,
-              },
-              padding: 10,
-              callbacks: {
-                label: function (context) {
-                  return `Gain: ${context.parsed.y.toFixed(2)} dB`;
-                },
-              },
-            },
-          },
+          animation: { duration: 0 },
+          plugins: { legend: { display: false } },
           scales: {
             x: {
-              type: "logarithmic",
               title: {
                 display: true,
-                text: "Frekuensi (Hz)",
+                text: "Waktu (s)",
                 color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
               },
-              grid: {
-                color: "rgba(255, 255, 255, 0.1)",
-                drawBorder: false,
-              },
-              ticks: {
-                color: "#e0e0e0",
-                font: {
-                  size: 12,
-                },
-                callback: function (value) {
-                  return value.toLocaleString();
-                },
-              },
+              grid: { color: "rgba(255,255,255,0.1)" },
+              ticks: { color: "#e0e0e0" },
             },
             y: {
-              title: {
-                display: true,
-                text: "Gain (dB)",
-                color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
-              },
-              grid: {
-                color: "rgba(255, 255, 255, 0.1)",
-                drawBorder: false,
-              },
-              ticks: {
-                color: "#e0e0e0",
-                font: {
-                  size: 12,
-                },
-              },
+              title: { display: true, text: "Amplitudo (V)", color: "#e0e0e0" },
+              grid: { color: "rgba(255,255,255,0.1)" },
+              ticks: { color: "#e0e0e0" },
             },
           },
         },
       });
-
-      // Menginisialisasi grafik sinyal input
       const inputCtx = inputSignal.value.getContext("2d");
       inputSignalChart = new Chart(inputCtx, {
         type: "line",
@@ -514,115 +313,35 @@ export default {
           labels: [],
           datasets: [
             {
-              label: "Sinyal Input",
+              label: "Sinyal Informasi",
               data: [],
               borderColor: "#ff00ff",
               borderWidth: 2,
               fill: false,
               tension: 0.4,
               pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHoverBackgroundColor: "#ff00ff",
-              pointHoverBorderColor: "#fff",
-              pointHoverBorderWidth: 2,
             },
           ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animation: {
-            duration: 0,
-          },
-          layout: {
-            padding: {
-              top: 10,
-              right: 10,
-              bottom: 10,
-              left: 10,
-            },
-          },
-          plugins: {
-            legend: {
-              position: "top",
-              labels: {
-                color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
-              },
-            },
-            tooltip: {
-              mode: "index",
-              intersect: false,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              titleColor: "#fff",
-              bodyColor: "#e0e0e0",
-              titleFont: {
-                size: 14,
-                weight: "bold",
-              },
-              bodyFont: {
-                size: 13,
-              },
-              padding: 10,
-              callbacks: {
-                label: function (context) {
-                  return `Amplitudo: ${context.parsed.y.toFixed(2)} V`;
-                },
-              },
-            },
-          },
+          animation: { duration: 0 },
+          plugins: { legend: { display: false } },
           scales: {
             x: {
-              title: {
-                display: true,
-                text: "Waktu (s)",
-                color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
-              },
-              grid: {
-                color: "rgba(255, 255, 255, 0.1)",
-                drawBorder: false,
-              },
-              ticks: {
-                color: "#e0e0e0",
-                font: {
-                  size: 12,
-                },
-                maxTicksLimit: 8,
-              },
+              title: { display: true, text: "Waktu (s)", color: "#e0e0e0" },
+              grid: { color: "rgba(255,255,255,0.1)" },
+              ticks: { color: "#e0e0e0" },
             },
             y: {
-              title: {
-                display: true,
-                text: "Amplitudo (V)",
-                color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
-              },
-              grid: {
-                color: "rgba(255, 255, 255, 0.1)",
-                drawBorder: false,
-              },
-              ticks: {
-                color: "#e0e0e0",
-                font: {
-                  size: 12,
-                },
-              },
+              title: { display: true, text: "Amplitudo (V)", color: "#e0e0e0" },
+              grid: { color: "rgba(255,255,255,0.1)" },
+              ticks: { color: "#e0e0e0" },
             },
           },
         },
       });
-
-      // Menginisialisasi grafik sinyal output
       const outputCtx = outputSignal.value.getContext("2d");
       outputSignalChart = new Chart(outputCtx, {
         type: "line",
@@ -630,133 +349,51 @@ export default {
           labels: [],
           datasets: [
             {
-              label: "Sinyal Output",
+              label: "Sinyal  Pembawa",
               data: [],
               borderColor: "#00ffff",
               borderWidth: 2,
               fill: false,
               tension: 0.4,
               pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHoverBackgroundColor: "#00ffff",
-              pointHoverBorderColor: "#fff",
-              pointHoverBorderWidth: 2,
             },
           ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animation: {
-            duration: 0,
-          },
-          layout: {
-            padding: {
-              top: 10,
-              right: 10,
-              bottom: 10,
-              left: 10,
-            },
-          },
-          plugins: {
-            legend: {
-              position: "top",
-              labels: {
-                color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
-              },
-            },
-            tooltip: {
-              mode: "index",
-              intersect: false,
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              titleColor: "#fff",
-              bodyColor: "#e0e0e0",
-              titleFont: {
-                size: 14,
-                weight: "bold",
-              },
-              bodyFont: {
-                size: 13,
-              },
-              padding: 10,
-              callbacks: {
-                label: function (context) {
-                  return `Amplitudo: ${context.parsed.y.toFixed(4)} V`;
-                },
-              },
-            },
-          },
+          animation: { duration: 0 },
+          plugins: { legend: { display: false } },
           scales: {
             x: {
-              title: {
-                display: true,
-                text: "Waktu (s)",
-                color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
-              },
-              grid: {
-                color: "rgba(255, 255, 255, 0.1)",
-                drawBorder: false,
-              },
-              ticks: {
-                color: "#e0e0e0",
-                font: {
-                  size: 12,
-                },
-                maxTicksLimit: 8,
-              },
+              title: { display: true, text: "Waktu (s)", color: "#e0e0e0" },
+              grid: { color: "rgba(255,255,255,0.1)" },
+              ticks: { color: "#e0e0e0" },
             },
             y: {
-              title: {
-                display: true,
-                text: "Amplitudo (V)",
-                color: "#e0e0e0",
-                font: {
-                  size: 14,
-                  weight: "bold",
-                },
-              },
-              grid: {
-                color: "rgba(255, 255, 255, 0.1)",
-                drawBorder: false,
-              },
-              ticks: {
-                color: "#e0e0e0",
-                font: {
-                  size: 12,
-                },
-                callback: function (value) {
-                  return value.toFixed(4);
-                },
-              },
-              suggestedMin: -1,
-              suggestedMax: 1,
+              title: { display: true, text: "Amplitudo (V)", color: "#e0e0e0" },
+              grid: { color: "rgba(255,255,255,0.1)" },
+              ticks: { color: "#e0e0e0" },
             },
           },
         },
       });
-
-      // Perhitungan awal
-      calculateParameters();
+      updateCharts();
     };
+
+    // Add this inside setup
+    watch(
+      [signalFreq, signalAmp, carrierFreq, carrierAmp, freqDeviation],
+      () => {
+        updateCharts();
+      }
+    );
 
     onMounted(() => {
       initializeCharts();
-      // Menginisialisasi tooltip
-      tippy("[data-tippy-content]", {
-        animation: "scale",
-        duration: 200,
-      });
+      tippy("[data-tippy-content]", { animation: "scale", duration: 200 });
     });
 
-    // Membersihkan frame animasi saat komponen di-unmount
     onUnmounted(() => {
       if (animationFrameId) {
         if (typeof animationFrameId === "number") {
@@ -768,23 +405,14 @@ export default {
     });
 
     return {
-      vin,
-      c1,
-      c2,
-      r1,
-      r2,
-      r3,
-      r4,
       signalFreq,
       signalAmp,
-      cutOffFreq,
-      vout,
-      gain,
-      gainDB,
-      frequencyResponse,
+      carrierFreq,
+      carrierAmp,
       inputSignal,
       outputSignal,
-      Q,
+      frequencyResponse,
+      freqDeviation, // ⬅️ Tambahkan baris ini
     };
   },
 };
