@@ -1,5 +1,5 @@
-/** * Komponen High Pass Filter Aktif * Menampilkan simulasi dan visualisasi
-rangkaian High Pass Filter */
+/** * Komponen Frequency Modulation (FM) * Menampilkan simulasi dan visualisasi
+rangkaian modulasi frekuensi */
 <template>
   <div class="high-pass-filter">
     <button type="button" class="home-button" @click="$router.push('/')">
@@ -18,9 +18,9 @@ rangkaian High Pass Filter */
         <figure>
           <img
             src="@/assets/ammod.png"
-            alt="Diagram rangkaian High Pass Filter Aktif"
+            alt="Diagram rangkaian Modulasi Frekuensi (FM)"
           />
-          <figcaption>Skema Rangkaian Modulasi Amplitudo</figcaption>
+          <figcaption>Skema Rangkaian Modulasi Frekuensi</figcaption>
         </figure>
 
         <div class="visual-graph-container">
@@ -192,6 +192,17 @@ import { watch } from "vue";
 // Mendaftarkan komponen Chart.js
 Chart.register(...registerables);
 
+/**
+ * Komponen Frequency Modulation (FM)
+ * Visualisasi dan simulasi sinyal FM, sinyal informasi, dan sinyal pembawa secara real-time.
+ *
+ * - Sinyal informasi: animasi real-time, window 5 siklus, hanya dipengaruhi signalFreq & signalAmp
+ * - Sinyal pembawa: animasi real-time, window 5 siklus, hanya dipengaruhi carrierFreq & carrierAmp
+ * - Sinyal FM: animasi real-time, window 5 siklus, dipengaruhi semua parameter
+ *
+ * @author <Nama Anda>
+ * @date <Tanggal>
+ */
 export default {
   name: "AmplitudeModulation",
   setup() {
@@ -210,59 +221,114 @@ export default {
     let startTime = null;
     const freqDeviation = ref(50); // dalam Hz, bisa disesuaikan
 
-    // Update charts for FM
-    const updateCharts = () => {
-      if (!inputSignalChart || !outputSignalChart || !frequencyChart) return;
+    /**
+     * Update chart untuk sinyal informasi (input)
+     * @param {number} phaseOffset - Fase animasi (radian)
+     * Window waktu mengikuti 5 siklus sinyal informasi
+     */
+    const updateInputSignalChart = (phaseOffset = 0) => {
+      if (!inputSignalChart) return;
+      const cyclesToShow = 5;
+      const N = 3000;
+      const durationInfo = cyclesToShow / signalFreq.value;
+      const timePoints = Array.from(
+        { length: N },
+        (_, i) => (i * durationInfo) / N
+      );
+      const infoData = timePoints.map(
+        (t) =>
+          signalAmp.value *
+          Math.sin(2 * Math.PI * signalFreq.value * t + phaseOffset)
+      );
+      inputSignalChart.data.labels = timePoints;
+      inputSignalChart.data.datasets[0].data = infoData;
+      inputSignalChart.update("none");
+    };
 
-      cancelAnimationFrame(animationFrameId); // Hentikan animasi sebelumnya
-      startTime = null; // Reset waktu awal agar fase diperbarui
+    /**
+     * Update chart untuk sinyal pembawa (carrier)
+     * @param {number} phaseOffset - Fase animasi (radian)
+     * Window waktu mengikuti 5 siklus sinyal carrier
+     */
+    const updateCarrierSignalChart = (phaseOffset = 0) => {
+      if (!outputSignalChart) return;
+      const cyclesToShow = 5;
+      const N = 3000;
+      const durationCarrier = cyclesToShow / carrierFreq.value;
+      const timePoints = Array.from(
+        { length: N },
+        (_, i) => (i * durationCarrier) / N
+      );
+      const carrierData = timePoints.map(
+        (t) =>
+          carrierAmp.value *
+          Math.sin(2 * Math.PI * carrierFreq.value * t + phaseOffset)
+      );
+      outputSignalChart.data.labels = timePoints;
+      outputSignalChart.data.datasets[0].data = carrierData;
+      outputSignalChart.update("none");
+    };
 
-      const animate = (timestamp) => {
-        if (!startTime) startTime = timestamp;
-        const elapsed = (timestamp - startTime) / 1000; // detik
+    /**
+     * Update chart untuk sinyal FM (modulasi frekuensi)
+     * @param {number} phaseOffset - Fase animasi (radian)
+     * Window waktu mengikuti 5 siklus sinyal carrier
+     * Rumus: Ac * sin(2πfc t + β sin(2πfm t) + phaseOffset)
+     * β = freqDeviation / signalFreq
+     */
+    const updateFMChart = (phaseOffset = 0) => {
+      if (!frequencyChart) return;
+      const cyclesToShow = 5;
+      const N = 3000;
+      const durationFM = cyclesToShow / carrierFreq.value;
+      const timePoints = Array.from(
+        { length: N },
+        (_, i) => (i * durationFM) / N
+      );
+      const beta = freqDeviation.value / signalFreq.value;
+      const fmData = timePoints.map(
+        (t) =>
+          carrierAmp.value *
+          Math.sin(
+            2 * Math.PI * carrierFreq.value * t +
+              beta * Math.sin(2 * Math.PI * signalFreq.value * t) +
+              phaseOffset
+          )
+      );
+      frequencyChart.data.labels = timePoints;
+      frequencyChart.data.datasets[0].data = fmData;
+      frequencyChart.update("none");
+    };
 
-        const timePoints = Array.from({ length: 100 }, (_, i) => i / 100);
-
-        const infoData = timePoints.map(
-          (t) =>
-            signalAmp.value *
-            Math.sin(2 * Math.PI * signalFreq.value * (t + elapsed))
-        );
-        const carrierData = timePoints.map(
-          (t) =>
-            carrierAmp.value *
-            Math.sin(2 * Math.PI * carrierFreq.value * (t + elapsed))
-        );
-
-        const fmData = timePoints.map(
-          (t) =>
-            carrierAmp.value *
-            Math.sin(
-              2 * Math.PI * carrierFreq.value * (t + elapsed) +
-                2 *
-                  Math.PI *
-                  (freqDeviation.value / signalFreq.value) *
-                  Math.sin(2 * Math.PI * signalFreq.value * (t + elapsed))
-            )
-        );
-
-        inputSignalChart.data.labels = timePoints;
-        inputSignalChart.data.datasets[0].data = infoData;
-        inputSignalChart.update("none");
-
-        outputSignalChart.data.labels = timePoints;
-        outputSignalChart.data.datasets[0].data = carrierData;
-        outputSignalChart.update("none");
-
-        frequencyChart.data.labels = timePoints;
-        frequencyChart.data.datasets[0].data = fmData;
-        frequencyChart.update("none");
-
-        animationFrameId = requestAnimationFrame(animate);
-      };
-
+    /**
+     * Fungsi animasi utama, memanggil update chart dengan phaseOffset
+     * @param {DOMHighResTimeStamp} timestamp
+     */
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = (timestamp - startTime) / 1000;
+      const animationSpeed = 0.5;
+      const phaseOffset =
+        2 * Math.PI * carrierFreq.value * elapsed * animationSpeed;
+      updateInputSignalChart(phaseOffset);
+      updateCarrierSignalChart(phaseOffset);
+      updateFMChart(phaseOffset);
       animationFrameId = requestAnimationFrame(animate);
     };
+
+    // Watcher terpisah
+    watch([signalFreq, signalAmp], () => {
+      updateInputSignalChart();
+    });
+    watch([carrierFreq, carrierAmp], () => {
+      updateCarrierSignalChart();
+    });
+    watch(
+      [signalFreq, signalAmp, carrierFreq, carrierAmp, freqDeviation],
+      () => {
+        updateFMChart();
+      }
+    );
 
     // Initialize charts
     const initializeCharts = () => {
@@ -378,20 +444,15 @@ export default {
           },
         },
       });
-      updateCharts();
+      updateInputSignalChart();
+      updateCarrierSignalChart();
+      updateFMChart();
     };
-
-    // Add this inside setup
-    watch(
-      [signalFreq, signalAmp, carrierFreq, carrierAmp, freqDeviation],
-      () => {
-        updateCharts();
-      }
-    );
 
     onMounted(() => {
       initializeCharts();
       tippy("[data-tippy-content]", { animation: "scale", duration: 200 });
+      animationFrameId = requestAnimationFrame(animate);
     });
 
     onUnmounted(() => {
@@ -412,7 +473,7 @@ export default {
       inputSignal,
       outputSignal,
       frequencyResponse,
-      freqDeviation, // ⬅️ Tambahkan baris ini
+      freqDeviation,
     };
   },
 };

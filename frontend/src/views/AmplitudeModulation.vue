@@ -1,5 +1,5 @@
-/** * Komponen High Pass Filter Aktif * Menampilkan simulasi dan visualisasi
-rangkaian High Pass Filter */
+/** * Komponen Amplitude Modulation (AM) * Menampilkan simulasi dan visualisasi
+rangkaian modulasi amplitudo */
 <template>
   <div class="high-pass-filter">
     <button type="button" class="home-button" @click="$router.push('/')">

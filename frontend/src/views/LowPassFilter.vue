@@ -1,5 +1,5 @@
-/** * Komponen High Pass Filter Aktif * Menampilkan simulasi dan visualisasi
-rangkaian High Pass Filter */
+/** * Komponen Low Pass Filter * Menampilkan simulasi dan visualisasi rangkaian
+Low Pass Filter Aktif */
 <template>
   <div class="high-pass-filter">
     <button type="button" class="home-button" @click="$router.push('/')">
@@ -447,11 +447,12 @@ export default {
       );
       const gains = frequencies.map((f) => {
         const ratio = f / fc;
-        const numerator = gain.value;
+        // Sallen-Key Low Pass Filter:
+        // Gain(f) = Av / sqrt((1 - (f/fc)^2)^2 + (f/(Q*fc))^2)
+        const numerator = Av;
         const denominator = Math.sqrt(
           Math.pow(1 - Math.pow(ratio, 2), 2) + Math.pow(ratio / Q.value, 2)
         );
-
         const gainAtF = numerator / denominator;
         return 20 * Math.log10(Math.abs(gainAtF));
       });
@@ -476,21 +477,21 @@ export default {
 
         // Calculate filter response with safety checks
         const ratio = freq / fc;
-        const numerator = ratio * ratio;
+        const numerator = Av;
         const denominator = Math.sqrt(
-          Math.pow(1 - numerator, 2) + Math.pow(ratio / Q.value, 2)
+          Math.pow(1 - Math.pow(ratio, 2), 2) + Math.pow(ratio / Q.value, 2)
         );
 
         // Calculate gain with safety checks
         let gainAtF = 0;
         if (denominator !== 0 && isFinite(denominator)) {
-          gainAtF = (Av * numerator) / denominator;
+          gainAtF = numerator / denominator;
         }
 
         // Calculate phase shift with safety checks
         let phaseShift = 0;
-        if (1 - numerator !== 0 && isFinite(1 - numerator)) {
-          phaseShift = Math.atan2(ratio / Q.value, 1 - numerator);
+        if (1 - Math.pow(ratio, 2) !== 0 && isFinite(1 - Math.pow(ratio, 2))) {
+          phaseShift = Math.atan2(ratio / Q.value, 1 - Math.pow(ratio, 2));
         }
 
         // Generate output signal with phase shift
