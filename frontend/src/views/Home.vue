@@ -62,27 +62,31 @@
           </div>
         </div>
 
-        <!-- Card Analog to Digital Converter (Coming Soon) -->
-        <div class="lab-card coming-soon">
+        <!-- Card Analog to Digital Converter -->
+        <div class="lab-card" @click="navigateTo('/adConverter')">
           <div class="card-icon">
-            <i class="fas fa-solid fa-wave-sine"></i>
+            <i class="fas fa-microchip"></i>
           </div>
           <div class="card-content">
-            <h2>Analog to Digital Converter</h2>
-            <p>Simulasi dan analisis rangkaian</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            <h2>Analog to Digital Converter (ADC)</h2>
+            <p>
+              Simulasi proses konversi sinyal analog menjadi digital
+              (kuantisasi, encoding, visualisasi NRZ).
+            </p>
           </div>
         </div>
 
-        <!-- Card Digital to Analog Converter (Coming Soon) -->
-        <div class="lab-card coming-soon">
+        <!-- Card Digital to Analog Converter -->
+        <div class="lab-card" @click="navigateTo('/daConverter')">
           <div class="card-icon">
-            <i class="fas fa-solid fa-wave-sine"></i>
+            <i class="fas fa-microchip"></i>
           </div>
           <div class="card-content">
-            <h2>Digital to Analog Converter</h2>
-            <p>Simulasi dan analisis rangkaian</p>
-            <span class="coming-soon-badge">Coming Soon</span>
+            <h2>Digital to Analog Converter (DAC)</h2>
+            <p>
+              Simulasi proses konversi sinyal digital (biner) menjadi analog
+              (rekonstruksi, rekuantisasi).
+            </p>
           </div>
         </div>
 

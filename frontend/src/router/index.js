@@ -8,7 +8,8 @@ import HighPassFilter from "../views/HighPassFilter.vue";
 import LowPassFilter from "../views/LowPassFilter.vue";
 import AmplitudeModulation from "../views/AmplitudeModulation.vue";
 import FrequencyModulation from "../views/FrequencyModulation.vue";
-
+import AnalogtoDigitalConverter from "@/views/AnalogtoDigitalConverter.vue";
+import DigitaltoAnalogConverter from "@/views/DigitaltoAnalogConverter.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -48,6 +49,22 @@ const router = createRouter({
       path: "/freqmod",
       name: "freqmod",
       component: FrequencyModulation,
+      meta: {
+        title: "Frequency Modulation - Praktikum Virtual Sistem Telekomunikasi",
+      },
+    },
+    {
+      path: "/adConverter",
+      name: "adConverter",
+      component: AnalogtoDigitalConverter,
+      meta: {
+        title: "Frequency Modulation - Praktikum Virtual Sistem Telekomunikasi",
+      },
+    },
+    {
+      path: "/daConverter",
+      name: "daConverter",
+      component: DigitaltoAnalogConverter,
       meta: {
         title: "Frequency Modulation - Praktikum Virtual Sistem Telekomunikasi",
       },

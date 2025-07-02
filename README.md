@@ -1,25 +1,28 @@
 # Praktikum Sistem Telekomunikasi
 
-Repositori ini berisi kode sumber dan dokumentasi untuk praktikum mata kuliah Sistem Telekomunikasi, khususnya untuk simulasi rangkaian filter aktif dan modulasi.
+Repositori ini berisi kode sumber dan dokumentasi untuk praktikum mata kuliah Sistem Telekomunikasi, khususnya untuk simulasi rangkaian filter aktif, modulasi, serta konversi sinyal analog-digital dan digital-analog.
 
 ## Deskripsi Project
 
-Project ini merupakan aplikasi web untuk simulasi rangkaian filter aktif dan modulasi, terdiri dari:
+Project ini merupakan aplikasi web untuk simulasi rangkaian filter aktif, modulasi, dan konversi sinyal, terdiri dari:
 
 - High Pass Filter Aktif
 - Low Pass Filter Aktif
 - Amplitude Modulation (AM)
 - Frequency Modulation (FM)
-- (Rencana: Band Pass Filter, Oscillator, DAC, ADC)
+- Analog to Digital Converter (ADC)
+- Digital to Analog Converter (DAC)
+- (Rencana: Band Pass Filter, Oscillator)
 
 ## Fitur Utama
 
 - Simulasi rangkaian filter aktif dan modulasi secara real-time
+- Simulasi konversi sinyal analog ke digital (ADC) dan digital ke analog (DAC)
 - Visualisasi respons frekuensi dan sinyal domain waktu
-- Visualisasi sinyal input, pembawa, dan termodulasi (AM/FM) dengan animasi real-time
-- Kontrol parameter terpisah untuk setiap sinyal (input, carrier, modulasi)
+- Visualisasi sinyal input, pembawa, termodulasi, serta sinyal digital/biner (ADC/DAC)
+- Kontrol parameter terpisah untuk setiap sinyal (input, carrier, modulasi, konversi)
 - Perhitungan parameter rangkaian secara otomatis
-- Antarmuka pengguna yang interaktif
+- Antarmuka pengguna yang interaktif dan konsisten
 - Hot-reload saat pengembangan
 - Build untuk produksi
 - Linting otomatis
@@ -106,7 +109,7 @@ Lab-Telkom/
 │   ├── src/               # Kode sumber frontend
 │   │   ├── assets/        # Gambar dan aset statis
 │   │   ├── components/    # Komponen Vue
-│   │   ├── views/         # Halaman-halaman (termasuk modul FM, AM, Filter)
+│   │   ├── views/         # Halaman-halaman (FM, AM, Filter, ADC, DAC)
 │   │   └── App.vue        # Komponen utama
 │   └── public/            # File statis publik
 │
