@@ -3,36 +3,48 @@
     <button type="button" class="home-button" @click="$router.push('/')">
       <i class="fas fa-home"></i>
     </button>
-    <h2>Konversi Analog ke Digital (ADC)</h2>
-    <div class="input-group">
-      <label for="analogInput">Nilai Analog (0.00 - 5.00V):</label>
-      <input
-        type="number"
-        id="analogInput"
-        min="0"
-        max="5"
-        step="0.01"
-        v-model="analogInput"
-      />
-      <button @click="convertAnalog">Konversi ke Digital</button>
-    </div>
-    <div class="output-group">
-      <p>
-        Nilai Analog Terkuantisasi:
-        <span>{{ quantizedAnalog }}</span>
-      </p>
-      <p>
-        Nilai Digital (Desimal): <span>{{ digitalDecimal }}</span>
-      </p>
-      <p>
-        Representasi Biner (8-bit): <span>{{ binaryOutput }}</span>
-      </p>
-      <div class="error-message" v-if="adcError">{{ adcError }}</div>
-    </div>
-    <div class="plot-container">
-      <h3>Output Polar NRZ</h3>
-      <canvas ref="nrzPlot"></canvas>
-    </div>
+    <h1>Konversi Analog ke Digital (ADC)</h1>
+    <main>
+      <div class="left-column">
+        <figure>
+          <img
+            src="@/assets/adca.png"
+            alt="Rangkaian Analod to Digital Converter (ADC)"
+          />
+        </figure>
+        <div class="input-group">
+          <label for="analogInput">Nilai Analog (0.00 - 5.00V):</label>
+          <input
+            type="number"
+            id="analogInput"
+            min="0"
+            max="5"
+            step="0.01"
+            v-model="analogInput"
+          />
+          <button @click="convertAnalog">Konversi ke Digital</button>
+        </div>
+      </div>
+      <div class="right-column">
+        <div class="output-group">
+          <p>
+            Nilai Analog Terkuantisasi:
+            <span>{{ quantizedAnalog }}</span>
+          </p>
+          <p>
+            Nilai Digital (Desimal): <span>{{ digitalDecimal }}</span>
+          </p>
+          <p>
+            Representasi Biner (8-bit): <span>{{ binaryOutput }}</span>
+          </p>
+          <div class="error-message" v-if="adcError">{{ adcError }}</div>
+        </div>
+        <div class="plot-container">
+          <h3>Output Polar NRZ</h3>
+          <canvas ref="nrzPlot"></canvas>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -145,10 +157,10 @@ export default {
 
 <style scoped>
 .adc-view {
-  max-width: 600px;
+  width: 90%;
   margin: 40px auto 0 auto;
   padding: 2.5rem 2rem 2rem 2rem;
-  background-color: #23272e;
+  background-color: #121212;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   position: relative;
@@ -157,8 +169,8 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #282c34;
-  color: #abb2bf;
+  background-color: #252829;
+  color: #ffffff;
   min-height: 100vh;
 }
 .home-button {
@@ -186,16 +198,25 @@ body {
 .home-button i {
   font-size: 1.2rem;
 }
-h2 {
-  color: #c678dd;
+h1 {
+  color: #ffffff;
   border-bottom: 2px solid #56b6c2;
   padding-bottom: 10px;
   margin-bottom: 20px;
   text-align: center;
 }
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+
 .input-group,
 .output-group {
   margin-bottom: 15px;
+  color: #ffffff;
 }
 label {
   display: block;
@@ -207,15 +228,15 @@ input[type="number"] {
   padding: 10px;
   border: 1px solid #5c6370;
   border-radius: 5px;
-  background-color: #353b45;
-  color: #abb2bf;
+  background-color: #121212;
+  color: #ffffff;
   font-size: 1em;
   margin-bottom: 10px;
 }
 button {
   padding: 10px 15px;
-  background-color: #56b6c2;
-  color: white;
+  background-color: #2196f3;
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -230,7 +251,7 @@ button:hover {
 }
 .output-group span {
   font-weight: bold;
-  color: #98c379;
+  color: #2196f3;
 }
 .error-message {
   color: #e06c75;
@@ -246,7 +267,7 @@ button:hover {
   text-align: center;
 }
 .plot-container h3 {
-  color: #61afef;
+  color: #ffffff;
   margin-bottom: 15px;
 }
 canvas {

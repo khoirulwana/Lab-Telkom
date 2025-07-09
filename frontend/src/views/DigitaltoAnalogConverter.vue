@@ -3,7 +3,14 @@
     <button type="button" class="home-button" @click="$router.push('/')">
       <i class="fas fa-home"></i>
     </button>
-    <h2>Konversi Digital ke Analog (DAC)</h2>
+    <h1>Konversi Digital ke Analog (DAC)</h1>
+    <figure>
+      <img
+        src="@/assets/daca.png"
+        alt="Rangkaian Digital to Analog Converter (DAC)"
+      />
+      <figcaption>Rangkaian Digital to Analog Converter (DAC)</figcaption>
+    </figure>
     <div class="input-group">
       <label for="binaryInput">Input Biner (8 digit 0/1):</label>
       <input
@@ -88,7 +95,7 @@ export default {
   max-width: 600px;
   margin: 40px auto 0 auto;
   padding: 2.5rem 2rem 2rem 2rem;
-  background-color: #23272e;
+  background-color: #121212;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   position: relative;
@@ -97,10 +104,31 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #282c34;
+  background-color: #252829;
   color: #abb2bf;
   min-height: 100vh;
 }
+
+h1 {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+figure {
+  text-align: center;
+  margin: 20px 0;
+}
+figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+figure figcaption {
+  color: #abb2bf;
+  font-style: italic;
+  margin-top: 10px;
+}
+
 .home-button {
   position: absolute;
   top: 20px;
@@ -136,6 +164,7 @@ h2 {
 .input-group,
 .output-group {
   margin-bottom: 15px;
+  color: #ffffff;
 }
 label {
   display: block;
@@ -147,15 +176,15 @@ input[type="text"] {
   padding: 10px;
   border: 1px solid #5c6370;
   border-radius: 5px;
-  background-color: #353b45;
-  color: #abb2bf;
+  background-color: #121212;
+  color: #ffffff;
   font-size: 1em;
   margin-bottom: 10px;
 }
 button {
   padding: 10px 15px;
-  background-color: #56b6c2;
-  color: white;
+  background-color: #2196f3;
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -163,14 +192,15 @@ button {
   transition: background-color 0.3s ease;
 }
 button:hover {
-  background-color: #4a9ca6;
+  background-color: #42a5f5;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.6);
 }
 .output-group p {
   margin: 8px 0;
 }
 .output-group span {
   font-weight: bold;
-  color: #98c379;
+  color: #42a5f5;
 }
 .error-message {
   color: #e06c75;
