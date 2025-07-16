@@ -11,21 +11,22 @@
             src="@/assets/adca.png"
             alt="Rangkaian Analod to Digital Converter (ADC)"
           />
+          <figcaption>
+            <p>Rangkaian Analod to Digital Converter (ADC)</p>
+          </figcaption>
         </figure>
-        <div class="input-group">
-          <label for="analogInput">Nilai Analog (0.00 - 5.00V):</label>
-          <input
-            type="number"
-            id="analogInput"
-            min="0"
-            max="5"
-            step="0.01"
-            v-model="analogInput"
-          />
-          <button @click="convertAnalog">Konversi ke Digital</button>
-        </div>
       </div>
       <div class="right-column">
+        <label for="analogInput">Masukkan Nilai Analog (0.00 - 5.00V) :</label>
+        <input
+          type="number"
+          id="analogInput"
+          min="0"
+          max="5"
+          step="0.01"
+          v-model="analogInput"
+        />
+        <button @click="convertAnalog">Konversi ke Digital</button>
         <div class="output-group">
           <p>
             Nilai Analog Terkuantisasi:
@@ -99,27 +100,46 @@ export default {
       const canvas = this.$refs.nrzPlot;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
+
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
       const binaryBits = this.binaryOutput.split("").map(Number);
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
-      const bitWidth = canvasWidth / 8;
+      const bitWidth = canvasWidth / 8; // Lebar untuk setiap bit (karena ada 8 bit)
       const centerY = canvasHeight / 2;
+
+      // Menggambar Garis Grid Vertikal
+      ctx.strokeStyle = "#3a3f47"; // Warna untuk garis grid (lebih gelap)
+      ctx.lineWidth = 1; // Ketebalan garis grid
+
+      for (let i = 1; i < 8; i++) {
+        // Menggambar 7 garis untuk 8 bit
+        const x = i * bitWidth;
+        ctx.beginPath();
+        ctx.moveTo(x, 0); // Dari atas canvas
+        ctx.lineTo(x, canvasHeight); // Sampai bawah canvas
+        ctx.stroke();
+      }
+
+      // Garis horizontal tengah (sumbu X)
       ctx.lineWidth = 2.5;
-      ctx.strokeStyle = "#f0c674";
-      ctx.beginPath();
       ctx.strokeStyle = "#5c6370";
+      ctx.beginPath();
       ctx.moveTo(0, centerY);
       ctx.lineTo(canvasWidth, centerY);
       ctx.stroke();
-      ctx.strokeStyle = "#f0c674";
+
+      // Menggambar bentuk gelombang NRZ
+      ctx.strokeStyle = "#00ff9d";
       for (let n = 0; n < binaryBits.length; n++) {
         const currentBit = binaryBits[n];
         const nextBit = binaryBits[n + 1];
         const startX = n * bitWidth;
         const endX = (n + 1) * bitWidth;
+
         let startY, endY;
         if (currentBit === 0) {
           startY = centerY + canvasHeight * 0.3;
@@ -128,10 +148,12 @@ export default {
           startY = centerY - canvasHeight * 0.3;
           endY = centerY - canvasHeight * 0.3;
         }
+
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
         ctx.stroke();
+
         if (nextBit !== undefined && currentBit !== nextBit) {
           ctx.beginPath();
           ctx.moveTo(endX, startY);
@@ -142,6 +164,20 @@ export default {
           }
           ctx.stroke();
         }
+
+        // --- Menambahkan Teks Bit ---
+        ctx.font = "bold 14px Arial"; // Ukuran dan jenis font
+        ctx.fillStyle = "#ffffff"; // Warna teks
+        ctx.textAlign = "center"; // Pusatkan teks secara horizontal
+        ctx.textBaseline = "bottom"; // Posisikan teks di bagian bawah "kotak" teks
+
+        // Hitung posisi X tengah untuk setiap bit
+        const textX = startX + bitWidth / 2;
+        // Posisikan teks sedikit di atas bagian atas canvas (misalnya 10px dari atas)
+        const textY = 20; // Sesuaikan nilai ini sesuai kebutuhan Anda
+
+        ctx.fillText(currentBit.toString(), textX, textY);
+        // --- Akhir Teks Bit ---
       }
     },
   },
@@ -157,7 +193,8 @@ export default {
 
 <style scoped>
 .adc-view {
-  width: 90%;
+  width: 80%;
+  height: 60vh;
   margin: 40px auto 0 auto;
   padding: 2.5rem 2rem 2rem 2rem;
   background-color: #121212;
@@ -165,6 +202,7 @@ export default {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   position: relative;
 }
+
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   margin: 0;
@@ -173,6 +211,7 @@ body {
   color: #ffffff;
   min-height: 100vh;
 }
+
 .home-button {
   position: absolute;
   top: 20px;
@@ -191,16 +230,19 @@ body {
   height: 40px;
   box-shadow: 0 2px 8px rgba(33, 150, 243, 0.4);
 }
+
 .home-button:hover {
   background-color: #42a5f5;
   box-shadow: 0 4px 12px rgba(33, 150, 243, 0.6);
 }
+
 .home-button i {
   font-size: 1.2rem;
 }
+
 h1 {
   color: #ffffff;
-  border-bottom: 2px solid #56b6c2;
+  border-bottom: 2px solid #2d2d2d;
   padding-bottom: 10px;
   margin-bottom: 20px;
   text-align: center;
@@ -209,15 +251,39 @@ h1 {
 main {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: space-around;
+  gap: 60px;
 }
 
-.input-group,
-.output-group {
-  margin-bottom: 15px;
+.left-column {
+  width: 40%;
+  align-self: center;
+}
+
+.right-column {
+  width: 60%;
   color: #ffffff;
 }
+
+figure {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+figcaption {
+  margin-top: 1rem;
+  color: #e0e0e0;
+  font-style: italic;
+  font-size: 1rem;
+}
+
 label {
   display: block;
   margin-bottom: 8px;
@@ -246,6 +312,16 @@ button {
 button:hover {
   background-color: #4a9ca6;
 }
+
+.output-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: first baseline;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px auto;
+}
+
 .output-group p {
   margin: 8px 0;
 }
@@ -253,6 +329,7 @@ button:hover {
   font-weight: bold;
   color: #2196f3;
 }
+
 .error-message {
   color: #e06c75;
   background-color: #4b2a2e;
