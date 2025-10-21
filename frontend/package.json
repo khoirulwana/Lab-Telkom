@@ -2,7 +2,7 @@
   "name": "labtelkom-frontend",
   "version": "0.1.0",
   "private": true,
-  "description": "Frontend untuk aplikasi simulasi rangkaian filter aktif pada praktikum Sistem Telekomunikasi",
+  "description": "Frontend untuk aplikasi simulasi rangkaian pada praktikum Sistem Telekomunikasi",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

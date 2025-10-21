@@ -1,7 +1,7 @@
 {
   "name": "labtelkom-backend",
   "version": "1.0.0",
-  "description": "Backend untuk aplikasi simulasi rangkaian filter aktif pada praktikum Sistem Telekomunikasi",
+  "description": "Backend untuk aplikasi simulasi rangkaian pada praktikum Sistem Telekomunikasi",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
