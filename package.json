@@ -1,0 +1,12 @@
+{
+  "name": "labtelkom-fullstack",
+  "version": "1.0.0",
+  "description": "Fullstack aplikasi simulasi rangkaian Sistem Telekomunikasi (MEVN)",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build && cp -r dist ../backend/dist",
+    "start": "cd backend && npm install && node app.js"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
