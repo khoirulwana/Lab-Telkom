@@ -12,7 +12,7 @@
             alt="Rangkaian Analod to Digital Converter (ADC)"
           />
           <figcaption>
-            <p>Rangkaian Analod to Digital Converter (ADC)</p>
+            <p>Rangkaian Analog to Digital Converter (ADC)</p>
           </figcaption>
         </figure>
       </div>
@@ -193,14 +193,12 @@ export default {
 
 <style scoped>
 .adc-view {
-  width: 80%;
-  height: 60vh;
+  width: 90%;
   margin: 40px auto 0 auto;
   padding: 2.5rem 2rem 2rem 2rem;
   background-color: #121212;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-  position: relative;
 }
 
 body {

@@ -92,14 +92,26 @@ export default {
 
 <style scoped>
 .dac-view {
-  max-width: 600px;
+  width: 90%;
+  border-radius: 12px;
   margin: 40px auto 0 auto;
   padding: 2.5rem 2rem 2rem 2rem;
   background-color: #121212;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-  position: relative;
 }
+
+.dac-view h1 {
+  margin: 0;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  border-bottom: 2px solid #2d2d2d;
+  margin-bottom: 2rem;
+}
+
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   margin: 0;

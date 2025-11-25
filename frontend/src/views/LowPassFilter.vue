@@ -981,6 +981,7 @@ export default {
 .high-pass-filter {
   padding: 2rem;
   width: 90%;
+  border-radius: 12px;
   margin: 0 auto;
   color: #ffffff;
   background: #121212;
