@@ -4,14 +4,19 @@
       <i class="fas fa-home"></i>
     </button>
     <h1>Konversi Digital ke Analog (DAC)</h1>
-    <figure>
+    <figure
+      data-tippy-content="Skema rangkaian DAC berbasis jaringan R/2R untuk konversi digital-ke-analog"
+    >
       <img
         src="@/assets/daca.png"
         alt="Rangkaian Digital to Analog Converter (DAC)"
       />
       <figcaption>Rangkaian Digital to Analog Converter (DAC)</figcaption>
     </figure>
-    <div class="input-group">
+    <div
+      class="input-group"
+      data-tippy-content="Masukkan 8 bit biner (0/1) untuk dihitung nilai analognya"
+    >
       <label for="binaryInput">Input Biner (8 digit 0/1):</label>
       <input
         type="text"
@@ -20,9 +25,17 @@
         placeholder="Contoh: 10110010"
         v-model="binaryInput"
       />
-      <button @click="convertDigital">Konversi ke Analog</button>
+      <button
+        @click="convertDigital"
+        data-tippy-content="Klik untuk mengonversi deret biner menjadi tegangan analog"
+      >
+        Konversi ke Analog
+      </button>
     </div>
-    <div class="output-group">
+    <div
+      class="output-group"
+      data-tippy-content="Menampilkan nilai analog dan hasil rekuantisasi digital/analog"
+    >
       <p>
         Nilai Analog Hasil Konversi: <span>{{ dacAnalogOutput }}</span>
       </p>
@@ -40,6 +53,14 @@
 </template>
 
 <script>
+/**
+ * Komponen konversi Digital ke Analog (DAC)
+ * Menghitung tegangan analog dari 8 bit biner dan menampilkan hasil rekuantisasi
+ */
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/animations/scale.css";
+
 export default {
   data() {
     return {
@@ -86,6 +107,13 @@ export default {
       this.reQuantizedDigital = lReQuantizedDigital;
       this.reQuantizedAnalog = nReQuantizedAnalog.toFixed(5);
     },
+  },
+  mounted() {
+    tippy("[data-tippy-content]", {
+      animation: "scale",
+      duration: 200,
+      theme: "light-border",
+    });
   },
 };
 </script>

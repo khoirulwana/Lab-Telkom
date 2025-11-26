@@ -9,9 +9,13 @@
     <main class="main-content">
       <div class="lab-grid">
         <!-- Card High Pass Filter -->
-        <div class="lab-card" @click="navigateTo('/highpass')">
+        <div
+          class="lab-card"
+          @click="navigateTo('/highpass')"
+          data-tippy-content="Klik untuk membuka simulasi High Pass Filter Aktif"
+        >
           <div class="card-icon">
-            <i class="fas fa-wave-square"></i>
+            <i class="fas fa-arrow-up-wide-short"></i>
           </div>
           <div class="card-content">
             <h2>High Pass Filter</h2>
@@ -25,9 +29,13 @@
         </div>
 
         <!-- Card Low Pass Filter -->
-        <div class="lab-card" @click="navigateTo('/lowpass')">
+        <div
+          class="lab-card"
+          @click="navigateTo('/lowpass')"
+          data-tippy-content="Klik untuk membuka simulasi Low Pass Filter Aktif"
+        >
           <div class="card-icon">
-            <i class="fas fa-filter"></i>
+            <i class="fas fa-arrow-down-wide-short"></i>
           </div>
           <div class="card-content">
             <h2>Low Pass Filter</h2>
@@ -41,9 +49,13 @@
         </div>
 
         <!-- Card Amplitude Modulation -->
-        <div class="lab-card" @click="navigateTo('/ammodulation')">
+        <div
+          class="lab-card"
+          @click="navigateTo('/ammodulation')"
+          data-tippy-content="Klik untuk membuka simulasi Amplitude Modulation (AM)"
+        >
           <div class="card-icon">
-            <i class="fas fa-solid fa-wave-sine"></i>
+            <i class="fas fa-wave-square"></i>
           </div>
           <div class="card-content">
             <h2>Amplitude Modulation</h2>
@@ -52,9 +64,13 @@
         </div>
 
         <!-- Card Frequency Modulation -->
-        <div class="lab-card" @click="navigateTo('/freqmod')">
+        <div
+          class="lab-card"
+          @click="navigateTo('/freqmod')"
+          data-tippy-content="Klik untuk membuka simulasi Frequency Modulation (FM)"
+        >
           <div class="card-icon">
-            <i class="fas fa-solid fa-wave-sine"></i>
+            <i class="fas fa-broadcast-tower"></i>
           </div>
           <div class="card-content">
             <h2>Frequency Modulation</h2>
@@ -63,9 +79,13 @@
         </div>
 
         <!-- Card Analog to Digital Converter -->
-        <div class="lab-card" @click="navigateTo('/adConverter')">
+        <div
+          class="lab-card"
+          @click="navigateTo('/adConverter')"
+          data-tippy-content="Klik untuk membuka simulasi konversi Analog ke Digital (ADC)"
+        >
           <div class="card-icon">
-            <i class="fas fa-microchip"></i>
+            <i class="fas fa-arrow-right-arrow-left"></i>
           </div>
           <div class="card-content">
             <h2>Analog to Digital Converter (ADC)</h2>
@@ -77,9 +97,13 @@
         </div>
 
         <!-- Card Digital to Analog Converter -->
-        <div class="lab-card" @click="navigateTo('/daConverter')">
+        <div
+          class="lab-card"
+          @click="navigateTo('/daConverter')"
+          data-tippy-content="Klik untuk membuka simulasi konversi Digital ke Analog (DAC)"
+        >
           <div class="card-icon">
-            <i class="fas fa-microchip"></i>
+            <i class="fas fa-exchange-alt"></i>
           </div>
           <div class="card-content">
             <h2>Digital to Analog Converter (DAC)</h2>
@@ -91,9 +115,12 @@
         </div>
 
         <!-- Card Radio Frequency Oscillator (Coming Soon) -->
-        <div class="lab-card coming-soon">
+        <div
+          class="lab-card coming-soon"
+          data-tippy-content="Modul Radio Frequency Oscillator sedang dikembangkan"
+        >
           <div class="card-icon">
-            <i class="fas fa-solid fa-wave-sine"></i>
+            <i class="fas fa-satellite-dish"></i>
           </div>
           <div class="card-content">
             <h2>Radio Frequency Oscillator</h2>
@@ -103,9 +130,12 @@
         </div>
 
         <!-- Card Band Pass Filter (Coming Soon) -->
-        <div class="lab-card coming-soon">
+        <div
+          class="lab-card coming-soon"
+          data-tippy-content="Modul Band Pass Filter sedang dikembangkan"
+        >
           <div class="card-icon">
-            <i class="fas fa-broadcast-tower"></i>
+            <i class="fas fa-sliders"></i>
           </div>
           <div class="card-content">
             <h2>Band Pass Filter</h2>
@@ -115,7 +145,10 @@
         </div>
 
         <!-- Card Band Stop Filter (Coming Soon) -->
-        <div class="lab-card coming-soon">
+        <div
+          class="lab-card coming-soon"
+          data-tippy-content="Modul Band Stop Filter sedang dikembangkan"
+        >
           <div class="card-icon">
             <i class="fas fa-ban"></i>
           </div>
@@ -135,7 +168,15 @@
 </template>
 
 <script>
+/**
+ * Halaman beranda utama
+ * Menampilkan kartu navigasi ke setiap modul praktikum dan tooltip penjelasan
+ */
 import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/animations/scale.css";
 
 export default {
   name: "HomeView",
@@ -145,6 +186,14 @@ export default {
     const navigateTo = (path) => {
       router.push(path);
     };
+
+    onMounted(() => {
+      tippy("[data-tippy-content]", {
+        animation: "scale",
+        duration: 200,
+        theme: "light-border",
+      });
+    });
 
     return {
       navigateTo,

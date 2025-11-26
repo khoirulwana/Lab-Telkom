@@ -179,8 +179,9 @@ rangkaian modulasi frekuensi */
 
 <script>
 /**
- * Komponen High Pass Filter
- * Mengimplementasikan simulasi dan visualisasi rangkaian High Pass Filter Aktif
+ * Komponen Frequency Modulation (FM)
+ * Menyimulasikan dan memvisualisasikan sinyal informasi, sinyal pembawa,
+ * serta sinyal termodulasi frekuensi (FM) secara real-time.
  */
 import { ref, onMounted, onUnmounted } from "vue";
 import { Chart, registerables } from "chart.js";
@@ -192,19 +193,8 @@ import { watch } from "vue";
 // Mendaftarkan komponen Chart.js
 Chart.register(...registerables);
 
-/**
- * Komponen Frequency Modulation (FM)
- * Visualisasi dan simulasi sinyal FM, sinyal informasi, dan sinyal pembawa secara real-time.
- *
- * - Sinyal informasi: animasi real-time, window 5 siklus, hanya dipengaruhi signalFreq & signalAmp
- * - Sinyal pembawa: animasi real-time, window 5 siklus, hanya dipengaruhi carrierFreq & carrierAmp
- * - Sinyal FM: animasi real-time, window 5 siklus, dipengaruhi semua parameter
- *
- * @author <Nama Anda>
- * @date <Tanggal>
- */
 export default {
-  name: "AmplitudeModulation",
+  name: "FrequencyModulation",
   setup() {
     // State for Amplitude Modulation
     const signalFreq = ref(5);

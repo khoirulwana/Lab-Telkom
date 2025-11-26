@@ -17,7 +17,12 @@
         </figure>
       </div>
       <div class="right-column">
-        <label for="analogInput">Masukkan Nilai Analog (0.00 - 5.00V) :</label>
+        <label
+          for="analogInput"
+          data-tippy-content="Masukkan tegangan analog antara 0,00–5,00 V untuk dikonversi"
+        >
+          Masukkan Nilai Analog (0.00 - 5.00V) :
+        </label>
         <input
           type="number"
           id="analogInput"
@@ -25,9 +30,18 @@
           max="5"
           step="0.01"
           v-model="analogInput"
+          data-tippy-content="Gunakan langkah 0,01 V untuk melihat perubahan level digital"
         />
-        <button @click="convertAnalog">Konversi ke Digital</button>
-        <div class="output-group">
+        <button
+          @click="convertAnalog"
+          data-tippy-content="Klik untuk menghitung hasil kuantisasi dan kode biner 8-bit"
+        >
+          Konversi ke Digital
+        </button>
+        <div
+          class="output-group"
+          data-tippy-content="Menampilkan hasil kuantisasi analog, desimal, dan biner"
+        >
           <p>
             Nilai Analog Terkuantisasi:
             <span>{{ quantizedAnalog }}</span>
@@ -40,7 +54,10 @@
           </p>
           <div class="error-message" v-if="adcError">{{ adcError }}</div>
         </div>
-        <div class="plot-container">
+        <div
+          class="plot-container"
+          data-tippy-content="Diagram waktu sinyal NRZ polar berdasarkan kode biner"
+        >
           <h3>Output Polar NRZ</h3>
           <canvas ref="nrzPlot"></canvas>
         </div>
@@ -50,6 +67,14 @@
 </template>
 
 <script>
+/**
+ * Komponen konversi Analog ke Digital (ADC)
+ * Menghitung hasil kuantisasi, kode biner 8-bit, dan menggambar sinyal NRZ polar
+ */
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/animations/scale.css";
+
 export default {
   data() {
     return {
@@ -184,6 +209,11 @@ export default {
   mounted() {
     this.drawNRZPlot();
     window.addEventListener("resize", this.drawNRZPlot);
+    tippy("[data-tippy-content]", {
+      animation: "scale",
+      duration: 200,
+      theme: "light-border",
+    });
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.drawNRZPlot);

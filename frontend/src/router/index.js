@@ -42,7 +42,7 @@ const router = createRouter({
       name: "ammodulation",
       component: AmplitudeModulation,
       meta: {
-        title: "Low Pass FIlter - Praktikum Virtual Sistem Telekomunikasi",
+        title: "Amplitude Modulation - Praktikum Virtual Sistem Telekomunikasi",
       },
     },
     {
@@ -58,7 +58,8 @@ const router = createRouter({
       name: "adConverter",
       component: AnalogtoDigitalConverter,
       meta: {
-        title: "Frequency Modulation - Praktikum Virtual Sistem Telekomunikasi",
+        title:
+          "Analog to Digital Converter - Praktikum Virtual Sistem Telekomunikasi",
       },
     },
     {
@@ -66,7 +67,8 @@ const router = createRouter({
       name: "daConverter",
       component: DigitaltoAnalogConverter,
       meta: {
-        title: "Frequency Modulation - Praktikum Virtual Sistem Telekomunikasi",
+        title:
+          "Digital to Analog Converter - Praktikum Virtual Sistem Telekomunikasi",
       },
     },
   ],

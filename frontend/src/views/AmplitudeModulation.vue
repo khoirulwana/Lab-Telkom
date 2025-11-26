@@ -156,8 +156,8 @@ rangkaian modulasi amplitudo */
 
 <script>
 /**
- * Komponen High Pass Filter
- * Mengimplementasikan simulasi dan visualisasi rangkaian High Pass Filter Aktif
+ * Komponen Amplitude Modulation
+ * Mengimplementasikan simulasi dan visualisasi rangkaian Amplitude Modulation
  */
 import { ref, onMounted, onUnmounted } from "vue";
 import { Chart, registerables } from "chart.js";
